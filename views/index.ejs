@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="./index.css">
+
+<div class="header">
+  <h1>Dashboard / <%= user %></h1>
+</div>
+
+<div class="container">
+  <div class="section add-product">
+    <h2 class="sec-title">Adicionar produtos</h2>
+    <form class="add-ad">
+      <div class="form-field">
+        <label for="name">Nome do produto</label>
+        <input type="text" id="name" name="name">
+      </div>
+      <div class="form-field">
+        <label for="url">URL do anúncio</label>
+        <input type="text" id="url" name="url">
+      </div>
+      <button class="btn" type="submit">Adicionar</button>
+    </form>
+  </div>
+</div>
+<div class="container">
+  <div class="section">
+    <h2 class="sec-title">Produtos monitorados</h2>
+    <div class="data-list">
+      <!-- <div class="card">
+        <img>
+        <h3>Nome produto</h3>
+        <p>Acessos:</p>
+        <p>Vendas:</p>
+        <p>Taxa de conversão:</p>
+        <button>+ detalhes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="faded-background">
+  <div class="prompt-plot">
+    <div id="chartContainer" style="height: 80%; width: 90%;"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="./index.js"></script>
