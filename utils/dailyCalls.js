@@ -48,21 +48,11 @@ exports.updateSellsOnAllUsers = () => {
             url = ad.url;
 
             currentTotalSells = await readSellsOnAd(url);
-            //currentTotalVisits = await gatherTotalVisits(url);
+            
+            dailySell = currentTotalSells - ad.totalSells;
 
-            // first iteration
-            if (ad.totalSells === 0) {
-              totalSells = { totalSells: currentTotalSells };
-            } else {
-              dailySell = currentTotalSells - ad.totalSells;
-
-              sells = { sells: [...ad.sells, sell] };
-              totalSells = { totalSells: currentTotalSells };
-            }
-
-            for (sell in sells.sells) {
-              totalSells += sell;
-            }
+            sells = { sells: [...ad.sells, dailySell] };
+            totalSells = { totalSells: currentTotalSells };
 
             axios.all([
               axios.put(`/api/v1/ads/${id}`, sells, options),

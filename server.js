@@ -59,9 +59,9 @@ app.use("/", login);
 app.use(errorHandler);
 
 // scheduling daily calls
-cron.schedule("*/1 * * * *", () => {
+cron.schedule("*/10 * * * * *", () => {
   console.log("calling dailly functions");
-  //updateSellsOnAllUsers();
+  updateSellsOnAllUsers();
 });
 
 // handle unhandled promise rejections
