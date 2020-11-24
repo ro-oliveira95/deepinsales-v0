@@ -29,34 +29,32 @@ exports.updateSellsOnAllUsers = () => {
           ads = allAds.map((ad) => {
             return {
               id: ad._id,
+              name: ad.name,
               url: ad.url,
               sells: ad.sells,
               totalSells: ad.totalSells,
             };
           });
-
-          let id,
-            url,
-            dailySell,
-            sells,
-            totalSells,
-            currentTotalSells,
-            currentTotalVisits;
+          
+          // console.log(ads);
 
           ads.forEach(async (ad) => {
-            id = ad.id;
-            url = ad.url;
-
-            currentTotalSells = await readSellsOnAd(url);
+            const currentTotalSells = await readSellsOnAd(ad.url);
             
-            dailySell = currentTotalSells - ad.totalSells;
+            const dailySell = currentTotalSells - ad.totalSells;
 
-            sells = { sells: [...ad.sells, dailySell] };
-            totalSells = { totalSells: currentTotalSells };
+            let acumulatedDailySells = dailySell;
+
+            if (ad.sells.length !== 0){
+              acumulatedDailySells += ad.sells[ad.sells.length-1];
+            }
+
+            const sells = { sells: [...ad.sells, acumulatedDailySells] };
+            const totalSells = { totalSells: currentTotalSells };
 
             axios.all([
-              axios.put(`/api/v1/ads/${id}`, sells, options),
-              axios.put(`/api/v1/ads/${id}`, totalSells, options),
+              axios.put(`/api/v1/ads/${ad.id}`, sells, options),
+              axios.put(`/api/v1/ads/${ad.id}`, totalSells, options),
             ]);
           });
         })

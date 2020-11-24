@@ -59,7 +59,7 @@ app.use("/", login);
 app.use(errorHandler);
 
 // scheduling daily calls
-cron.schedule("* */6 * * *", () => {
+cron.schedule("* */1 * * *", () => {
   console.log("calling dailly functions");
   updateSellsOnAllUsers();
 });
