@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ddd;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container {
+  width: 900px;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.section {
+  width: 500px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  border: 2px solid rgb(112, 214, 180);
+  border-radius: 1rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  background-color: rgb(112, 214, 180);
+  outline: none !important;
+  border: solid 2px rgb(19, 66, 60);
+  color: 222;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  margin-right: 1rem;
+}
+
+.btn:hover {
+  background-color: rgb(67, 231, 209);
+}
+
+.btn-register {
+  background-color: rgb(144, 214, 112);
+}
+
+.btn-register:hover {
+  background-color: rgb(123, 184, 94);
+}
+
+.form-field {
+  display: block;
+  width: 100%;
+  padding: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-field input {
+  display: block;
+  width: 100%;
+  padding: 0.1rem;
+  font-size: 1rem;
+}
+
+.add-product {
+  border-bottom: 1px solid rgb(44, 129, 118);
+}
+
+input:focus {
+  outline: none !important;
+  border: 1px solid rgb(44, 129, 118);
+  box-shadow: 0 0 10px #719ece;
+}
+
+.faded-background {
+  display: none;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popWindow {
+  background-color: #ccc;
+  animation: openDialog 0.5s forwards;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 3;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  border: 2px solid rgb(112, 214, 180);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.window-content {
+  display: none;
+}
+
+@keyframes openDialog {
+  from {
+    width: 0;
+    height: 0;
+  }
+  to {
+    width: 40%;
+    height: 330px;
+  }
+}
