@@ -30,7 +30,23 @@ form {
   flex-direction: column;
 }
 
+.bg {
+  position: relative;
+}
+
+.bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./img/background-login.jpg");
+  filter: grayscale(50%);
+}
+
 .container {
+  position: relative;
   width: 900px;
   height: 100vh;
   margin: auto;
@@ -46,6 +62,7 @@ form {
   margin-bottom: 1rem;
   border: 2px solid rgb(112, 214, 180);
   border-radius: 1rem;
+  background-color: rgba(204, 204, 204, 0.9);
 }
 
 .btn {
@@ -98,7 +115,7 @@ input:focus {
 
 .faded-background {
   display: none;
-  position: absolute;
+  position: fixed;
   align-items: center;
   justify-content: center;
   top: 0px;

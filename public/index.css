@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-decoration: none;
 }
 
 body {
@@ -21,19 +22,87 @@ h2 {
 }
 
 .container {
-  width: 900px;
+  width: 80%;
   margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.header {
+.screen {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: rgb(204, 233, 229);
   text-align: center;
-  padding: 1rem;
   background-color: rgb(44, 129, 118);
+  padding: 1rem 0 0 0;
+}
+
+.main {
+  overflow: auto;
+}
+
+.menu h3 {
+  margin: 1rem;
+}
+
+.menu hr {
+  width: 100%;
+}
+
+.menu img {
+  width: 100px;
+  height: 100px;
   margin-bottom: 1rem;
+}
+
+.menu a .menu-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.menu h2 {
+  text-transform: uppercase;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  background-color: rgb(19, 66, 60);
+}
+
+.btn-menu {
+  font-size: 1rem;
+  color: #ccc;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 1rem;
+  width: 100%;
+  background-color: rgb(52, 145, 132);
+}
+
+.btn-logout {
+  background-color: rgb(201, 100, 97);
+  color: rgb(51, 51, 51);
+}
+
+.btn-menu:hover {
+  background-color: rgb(127, 180, 173);
+  color: rgb(19, 66, 60);
+}
+
+.btn-logout:hover {
+  background-color: rgb(155, 70, 67) !important;
+}
+
+.menu a:last-child {
+  margin-top: auto;
 }
 
 .section {
@@ -53,7 +122,7 @@ h2 {
   padding: 0.5rem 1rem;
   background-color: rgb(112, 214, 180);
   outline: none !important;
-  border: solid 2px rgb(19, 66, 60);
+  border: solid 1px rgb(19, 66, 60);
   color: 222;
   font-size: 1.1rem;
   transition: all 0.2s;

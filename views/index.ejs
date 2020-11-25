@@ -1,45 +1,47 @@
 <link rel="stylesheet" href="./index.css">
 
-<div class="header">
-  <h1>Dashboard / <%= user %></h1>
-  <a href="/logout">Logout</a>
-</div>
-
-<div class="container">
-  <div class="section add-product">
-    <h2 class="sec-title">Adicionar produtos</h2>
-    <form class="add-ad">
-      <div class="form-field">
-        <label for="name">Nome do produto</label>
-        <input type="text" id="name" name="name">
-      </div>
-      <div class="form-field">
-        <label for="url">URL do anúncio</label>
-        <input type="text" id="url" name="url">
-      </div>
-      <button class="btn" type="submit">Adicionar</button>
-    </form>
+<div class="screen">
+  <div class="menu">
+    <img src="./img/logo-modified.png" alt="logo">
+    <hr>
+    <h3><%= user %></h3>
+    <hr>
+    <a href="/" class="btn-menu">
+      <img src="./img/monitoring-icon.svg" alt="" class="menu-icon">
+      Monitoramento</a>
+    <a href="/logout" class="btn-menu btn-logout">Logout</a>
   </div>
-</div>
-<div class="container">
-  <div class="section">
-    <h2 class="sec-title">Produtos monitorados</h2>
-    <div class="data-list">
-      <!-- <div class="card">
-        <img>
-        <h3>Nome produto</h3>
-        <p>Acessos:</p>
-        <p>Vendas:</p>
-        <p>Taxa de conversão:</p>
-        <button>+ detalhes</button>
-      </div> -->
+  
+  <div class="main">
+    <div class="container">
+      <div class="section add-product">
+        <h2 class="sec-title">Adicionar produtos</h2>
+        <form class="add-ad">
+          <div class="form-field">
+            <label for="name">Nome do produto</label>
+            <input type="text" id="name" name="name">
+          </div>
+          <div class="form-field">
+            <label for="url">URL do anúncio</label>
+            <input type="text" id="url" name="url">
+          </div>
+          <button class="btn" type="submit">Adicionar</button>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
-
-<div class="faded-background">
-  <div class="prompt-plot">
-    <div id="chartContainer" style="height: 80%; width: 90%;"></div>
+    <div class="container">
+      <div class="section">
+        <h2 class="sec-title">Produtos monitorados</h2>
+        <div class="data-list">
+        </div>
+      </div>
+    </div>
+    
+    <div class="faded-background">
+      <div class="prompt-plot">
+        <div id="chartContainer" style="height: 80%; width: 90%;"></div>
+      </div>
+    </div>
   </div>
 </div>
 
