@@ -22,7 +22,7 @@ h2 {
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -106,12 +106,41 @@ h2 {
 }
 
 .section {
-  display: flex;
+  display: grid;
   width: 100%;
   padding: 1rem;
   margin-bottom: 1rem;
   align-items: center;
+}
+
+.section-options {
+  display: block;
+}
+
+.section-content {
+  grid-template-columns: 450px 1fr;
+}
+
+#chartContainer {
+  width: 100%;
+  height: 500px;
+}
+
+.subsection {
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: initial;
+}
+
+.subsection:first-child {
+  margin-right: 2rem;
+}
+
+.container:first-child {
+  border-bottom: 1px solid rgb(44, 129, 118);
 }
 
 .sec-title {
@@ -130,6 +159,11 @@ h2 {
 
 .btn:hover {
   background-color: rgb(67, 231, 209);
+}
+
+.btn-details {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
 }
 
 .add-ad {
@@ -154,10 +188,6 @@ h2 {
   font-size: 1rem;
 }
 
-.add-product {
-  border-bottom: 1px solid rgb(44, 129, 118);
-}
-
 input:focus {
   outline: none !important;
   border: 1px solid rgb(44, 129, 118);
@@ -172,30 +202,40 @@ input:focus {
 }
 
 .card img {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   margin-right: 1rem;
 }
 
 .card .card-content {
+  min-width: 200px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .card .card-content h3 {
+  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
-.card .card-content button {
-  margin-top: auto;
+.card .card-content p {
+  font-size: 0.9rem;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .data-list {
   width: 100%;
   padding: 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
 
@@ -237,4 +277,67 @@ input:focus {
     width: 60vw;
     height: 60vh;
   }
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(44, 129, 118);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(44, 129, 118);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

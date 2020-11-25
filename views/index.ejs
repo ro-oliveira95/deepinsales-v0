@@ -14,33 +14,36 @@
   
   <div class="main">
     <div class="container">
-      <div class="section add-product">
-        <h2 class="sec-title">Adicionar produtos</h2>
-        <form class="add-ad">
-          <div class="form-field">
-            <label for="name">Nome do produto</label>
-            <input type="text" id="name" name="name">
-          </div>
-          <div class="form-field">
-            <label for="url">URL do anúncio</label>
-            <input type="text" id="url" name="url">
-          </div>
-          <button class="btn" type="submit">Adicionar</button>
-        </form>
-      </div>
+        <div class="subsection subsection-addAd">
+          <h2 class="sec-title">Adicionar produtos</h2>
+          <form class="add-ad">
+            <div class="form-field">
+              <label for="name">Nome do produto</label>
+              <input type="text" id="name" name="name">
+            </div>
+            <div class="form-field">
+              <label for="url">URL do anúncio</label>
+              <input type="text" id="url" name="url">
+            </div>
+            <button class="btn" type="submit">Adicionar</button>
+          </form>
+        </div>
     </div>
     <div class="container">
-      <div class="section">
-        <h2 class="sec-title">Produtos monitorados</h2>
-        <div class="data-list">
+      <div class="section section-content">
+        <div class="subsection">
+          <h2 class="sec-title">Produtos monitorados</h2>
+          <div class="data-list">
+          </div>
+        </div>
+        <div class="subsection">
+            <div id="chartContainer"></div>
         </div>
       </div>
+
     </div>
     
     <div class="faded-background">
-      <div class="prompt-plot">
-        <div id="chartContainer" style="height: 80%; width: 90%;"></div>
-      </div>
     </div>
   </div>
 </div>

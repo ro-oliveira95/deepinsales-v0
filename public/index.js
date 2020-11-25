@@ -1,23 +1,24 @@
 document.querySelector(".add-ad").addEventListener("submit", addNewAdToDB);
 document.addEventListener("DOMContentLoaded", loadAds);
+document.addEventListener("DOMContentLoaded", renderPlot);
 // document.addEventListener("DOMContentLoaded", connectEvents);
+
 
 // init global variables
 let chart;
 
+function renderPlot () {
+  chart = createNewChart("gráfico 1");
+  chart.render();
+}
+
 function connectEvents() {
   document.querySelector(".btn-details").addEventListener("click", (e) => {
     document.querySelector(".faded-background").style.display = "flex";
-    setTimeout(() => {
-      chart = createNewChart("gráfico 1");
-      chart.render();
-    }, 500);
   });
   document.querySelector(".faded-background").addEventListener("click", (e) => {
     if (e.target.className == "faded-background") {
       document.querySelector(".faded-background").style.display = "none";
-      chart.destroy();
-      chart = null;
     }
   });
 }
@@ -118,8 +119,15 @@ function loadAds() {
                 : ad.sells[ad.sells.length - 1]
             }</p>
             <p>Taxa de conversão: 1</p>
-            <button class="btn btn-details">+ detalhes</button>
           </div>
+          <div class="btn-container">
+            <button class="btn btn-details">+ detalhes</button>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          
         </div>`;
       });
 
