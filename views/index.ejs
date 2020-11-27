@@ -13,34 +13,32 @@
   </div>
   
   <div class="main">
-    <div class="container">
-        <div class="subsection subsection-addAd">
-          <h2 class="sec-title">Adicionar produtos</h2>
-          <form class="add-ad">
-            <div class="form-field">
-              <label for="name">Nome do produto</label>
-              <input type="text" id="name" name="name">
-            </div>
-            <div class="form-field">
-              <label for="url">URL do anúncio</label>
-              <input type="text" id="url" name="url">
-            </div>
-            <button class="btn" type="submit">Adicionar</button>
-          </form>
-        </div>
-    </div>
-    <div class="container">
-      <div class="section section-content">
-        <div class="subsection">
-          <h2 class="sec-title">Produtos monitorados</h2>
-          <div class="data-list">
+    <div class="container add-ad">
+      <!-- <div class="subsection subsection-addAd"> -->
+        <h2 class="sec-title">Adicionar produtos</h2>
+        <form class="add-ad">
+          <div class="form-field">
+            <label for="name">Nome do produto</label>
+            <input type="text" id="name" name="name">
           </div>
+          <div class="form-field">
+            <label for="url">URL do anúncio</label>
+            <input type="text" id="url" name="url">
+          </div>
+          <button class="btn" type="submit">Adicionar</button>
+        </form>
+    </div>
+    <div class="container ad-list">
+        <div>
+          <h2 class="sec-title">Produtos monitorados</h2>
         </div>
-        <div class="subsection">
-            <div id="chartContainer"></div>
-        </div>
-      </div>
-
+        <div class="data-list"></div>
+    </div>
+    <div class="container chart-section">
+      <!-- <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div> -->
+      <div id="chartContainer"></div>
     </div>
     
     <div class="faded-background">

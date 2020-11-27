@@ -21,19 +21,22 @@ h2 {
   text-transform: uppercase;
 }
 
-.container {
-  width: 90%;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .screen {
   width: 100vw;
   height: 100vh;
   display: grid;
   grid-template-columns: 200px 1fr;
+}
+
+.main {
+  /* overflow: auto; */
+  display: grid;
+  grid-template-areas:
+    "ad-list add-ad"
+    "ad-list chart-section";
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 2rem;
 }
 
 .menu {
@@ -46,8 +49,24 @@ h2 {
   padding: 1rem 0 0 0;
 }
 
-.main {
-  overflow: auto;
+.container {
+  padding: 0.5rem;
+  /* border: 1px solid rgb(44, 129, 118); */
+  border-radius: 0.5rem;
+  background-color: rgb(157, 197, 187);
+}
+
+.add-ad {
+  height: 250px;
+  grid-area: add-ad;
+}
+
+.ad-list {
+  grid-area: ad-list;
+}
+
+.chart-section {
+  grid-area: chart-section;
 }
 
 .menu h3 {
@@ -105,14 +124,6 @@ h2 {
   margin-top: auto;
 }
 
-.section {
-  display: grid;
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  align-items: center;
-}
-
 .section-options {
   display: block;
 }
@@ -123,28 +134,14 @@ h2 {
 
 #chartContainer {
   width: 100%;
-  height: 500px;
-}
-
-.subsection {
-  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: initial;
-}
-
-.subsection:first-child {
-  margin-right: 2rem;
-}
-
-.container:first-child {
-  border-bottom: 1px solid rgb(44, 129, 118);
+  /* translate: 50%; */
+  transform: translateX(-50%);
 }
 
 .sec-title {
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .btn {
@@ -208,8 +205,6 @@ input:focus {
 }
 
 .card .card-content {
-  min-width: 200px;
-  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -226,16 +221,15 @@ input:focus {
 
 .btn-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
 }
 
 .data-list {
-  width: 100%;
+  /* width: 100%; */
   padding: 1rem;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 

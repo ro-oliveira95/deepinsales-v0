@@ -3,11 +3,10 @@ document.addEventListener("DOMContentLoaded", loadAds);
 document.addEventListener("DOMContentLoaded", renderPlot);
 // document.addEventListener("DOMContentLoaded", connectEvents);
 
-
 // init global variables
 let chart;
 
-function renderPlot () {
+function renderPlot() {
   chart = createNewChart("gráfico 1");
   chart.render();
 }
@@ -25,6 +24,7 @@ function connectEvents() {
 
 function createNewChart(title) {
   return new CanvasJS.Chart("chartContainer", {
+    responsive: true,
     animationEnabled: false,
     title: {
       text: title,
@@ -119,13 +119,13 @@ function loadAds() {
                 : ad.sells[ad.sells.length - 1]
             }</p>
             <p>Taxa de conversão: 1</p>
-          </div>
-          <div class="btn-container">
-            <button class="btn btn-details">+ detalhes</button>
-            <label class="switch">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
+            <div class="btn-container">
+              <button class="btn btn-details">+ detalhes</button>
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
           </div>
           
         </div>`;
