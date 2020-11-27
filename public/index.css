@@ -35,6 +35,7 @@ h2 {
     "ad-list add-ad"
     "ad-list chart-section";
   grid-template-columns: auto 1fr;
+  grid-template-rows: 250px 1fr;
   gap: 1rem;
   padding: 2rem;
 }
@@ -57,7 +58,7 @@ h2 {
 }
 
 .add-ad {
-  height: 250px;
+  /* height: 250px; */
   grid-area: add-ad;
 }
 
@@ -67,6 +68,18 @@ h2 {
 
 .chart-section {
   grid-area: chart-section;
+  /* overflow: hidden; */
+  /* width: 400px; */
+}
+
+#chartContainer {
+  position: relative;
+  height: 100%;
+  /* width: 500px; */
+}
+
+#chart {
+  width: 100% !important;
 }
 
 .menu h3 {
@@ -130,13 +143,6 @@ h2 {
 
 .section-content {
   grid-template-columns: 450px 1fr;
-}
-
-#chartContainer {
-  width: 100%;
-  height: 100%;
-  /* translate: 50%; */
-  transform: translateX(-50%);
 }
 
 .sec-title {

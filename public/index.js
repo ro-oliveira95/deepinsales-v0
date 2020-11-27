@@ -9,6 +9,9 @@ let chart;
 function renderPlot() {
   chart = createNewChart("gráfico 1");
   chart.render();
+  chart._updateSize()
+  // chart.update();
+  // ch = document.getElementById('chartContainer').style.width = "200px";
 }
 
 function connectEvents() {
@@ -23,8 +26,9 @@ function connectEvents() {
 }
 
 function createNewChart(title) {
-  return new CanvasJS.Chart("chartContainer", {
+  let canvas = new CanvasJS.Chart("chartContainer", {
     responsive: true,
+    maintainAspectRatio: false,
     animationEnabled: false,
     title: {
       text: title,
@@ -92,6 +96,8 @@ function createNewChart(title) {
       },
     ],
   });
+  console.log(canvas);
+  return canvas;
 }
 
 function loadAds() {
