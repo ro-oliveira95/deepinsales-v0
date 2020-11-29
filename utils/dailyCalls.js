@@ -35,21 +35,26 @@ exports.updateSellsOnAllUsers = () => {
               totalSells: ad.totalSells,
             };
           });
-          
-          // console.log(ads);
 
           ads.forEach(async (ad) => {
             const currentTotalSells = await readSellsOnAd(ad.url);
-            
+
             const dailySell = currentTotalSells - ad.totalSells;
+
+            console.log(dailySell);
 
             let acumulatedDailySells = dailySell;
 
-            if (ad.sells.length !== 0){
-              acumulatedDailySells += ad.sells[ad.sells.length-1];
+            if (ad.sells.length !== 0) {
+              acumulatedDailySells += ad.sells[ad.sells.length - 1].sells;
             }
 
-            const sells = { sells: [...ad.sells, acumulatedDailySells] };
+            const sellsData = {
+              timestamp: new Date(),
+              sells: acumulatedDailySells,
+            };
+
+            const sells = { sells: [...ad.sells, sellsData] };
             const totalSells = { totalSells: currentTotalSells };
 
             axios.all([
@@ -64,6 +69,7 @@ exports.updateSellsOnAllUsers = () => {
         });
     })
     .catch((err) => {
+      console.log("erro aqui");
       console.log(err);
     });
 };

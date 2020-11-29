@@ -16,7 +16,7 @@ const AdSchema = new mongoose.Schema({
     ],
     unique: [true, "Please add a URL that isn't already stored"],
   },
-  sells: [Number],
+  sells: [{ timestamp: Date, sells: Number }],
   visits: [Number],
   totalSells: {
     type: Number,

@@ -1,14 +1,13 @@
 document.querySelector(".add-ad").addEventListener("submit", addNewAdToDB);
-document.addEventListener("DOMContentLoaded", loadAds);
 document.addEventListener("DOMContentLoaded", createChart);
-// document.addEventListener("DOMContentLoaded", connectEvents);
+document.addEventListener("DOMContentLoaded", loadAds);
 
 // init global variables
 let chart;
 
 function updateChart(data) {
-  data.forEach((dataset, index) => {
-    //chart.data.labels = ["i1", "i2", "i3", "i4", "i5"];
+  chart.data.datasets = [];
+  data.forEach((dataset) => {
     chart.data.datasets.push(dataset);
   });
   chart.update();
@@ -35,28 +34,11 @@ function createChart() {
         xAxes: [
           {
             type: "time",
-            display: true,
-            time: {
-              unit: "seconds",
-            },
           },
         ],
       },
     },
   });
-
-  function connectEvents() {
-    document.querySelector(".btn-details").addEventListener("click", (e) => {
-      document.querySelector(".faded-background").style.display = "flex";
-    });
-    document
-      .querySelector(".faded-background")
-      .addEventListener("click", (e) => {
-        if (e.target.className == "faded-background") {
-          document.querySelector(".faded-background").style.display = "none";
-        }
-      });
-  }
 }
 
 function loadAds() {
@@ -81,7 +63,7 @@ function loadAds() {
             <p>Vendas: ${
               typeof ad.sells[ad.sells.length - 1] == "undefined"
                 ? "Sem registros"
-                : ad.sells[ad.sells.length - 1]
+                : ad.sells[ad.sells.length - 1].sells
             }</p>
             <p>Taxa de conversão: 1</p>
             <div class="btn-container">
@@ -101,45 +83,24 @@ function loadAds() {
       let data = [];
 
       ads.forEach((ad) => {
-        const formatedDate = new Date(ad.createdAt);
-        const datetime = formatedDate
-          .toISOString()
-          .slice(0, 10)
-          .replace(/-/g, "");
+        const sellsData = ad.sells.map((sell) => {
+          date = moment(sell.timestamp);
+
+          return { x: date, y: sell.sells };
+        });
 
         series = {
           label: ad.name,
-          data: [
-            {
-              x: datetime,
-              y: 10,
-            },
-          ],
+          fill: false,
+          borderColor: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+            Math.random() * 255
+          )}, ${Math.floor(Math.random() * 255)})`,
+          data: sellsData,
         };
-
-        console.log(ad.createdAt);
 
         data.push(series);
       });
 
-      /*let data = [
-        {
-          label: "s1",
-          borderColor: "blue",
-          data: [
-            { x: "2017-01-06 18:39:30", y: 100 },
-            { x: "2017-01-07 18:39:28", y: 101 },
-          ],
-        },
-        {
-          label: "s2",
-          borderColor: "red",
-          data: [
-            { x: "2017-01-07 18:00:00", y: 90 },
-            { x: "2017-01-08 18:00:00", y: 105 },
-          ],
-        },
-      ]; */
       updateChart(data);
     })
     .catch((err) => console.log(err));
@@ -164,13 +125,4 @@ function addNewAdToDB(e) {
       loadAds();
     })
     .catch((err) => console.log(err.message));
-}
-
-function toggleDataSeries(e) {
-  if (typeof e.dataSeries.visible === "undefined" || e.dataSeries.visible) {
-    e.dataSeries.visible = false;
-  } else {
-    e.dataSeries.visible = true;
-  }
-  chart.render();
 }

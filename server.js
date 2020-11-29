@@ -59,7 +59,7 @@ app.use("/", login);
 app.use(errorHandler);
 
 // scheduling daily calls
-cron.schedule("0 */1 * * *", () => {
+cron.schedule("*/10 * * * * *", () => {
   d = new Date();
   console.log(`[${d.toGMTString()}] calling dailly functions...`);
   updateSellsOnAllUsers();

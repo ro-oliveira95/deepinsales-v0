@@ -7,8 +7,17 @@ exports.readSellsOnAd = async (url) => {
     .get(url)
     .then((res) => {
       let data = res.data;
-      const index = data.search("ui-pdp-subtitle");
-      val = data.substring(index + 26, index + 31);
+      //const index = data.search("ui-pdp-subtitle");
+      //val = data.substring(index + 26, index + 31);
+
+      let startIndex = data.indexOf('<span class="ui-pdp-subtitle">');
+      startIndex = data.indexOf("|", startIndex);
+      const endIndex = data.indexOf("vendido", startIndex);
+
+      console.log(data.substring(startIndex + 1, endIndex));
+
+      val = Number(data.substring(startIndex + 1, endIndex));
+
       // return val;
     })
     .catch((err) => {
