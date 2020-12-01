@@ -41,8 +41,6 @@ exports.updateSellsOnAllUsers = () => {
 
             const dailySell = currentTotalSells - ad.totalSells;
 
-            console.log(dailySell);
-
             let acumulatedDailySells = dailySell;
 
             if (ad.sells.length !== 0) {
@@ -69,7 +67,7 @@ exports.updateSellsOnAllUsers = () => {
         });
     })
     .catch((err) => {
-      console.log("erro aqui");
+      console.log("erro ao logar como admin para get de todos os anuncios");
       console.log(err);
     });
 };

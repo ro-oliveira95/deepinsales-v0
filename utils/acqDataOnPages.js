@@ -21,7 +21,7 @@ exports.readSellsOnAd = async (url) => {
       // return val;
     })
     .catch((err) => {
-      console.log("erro ao extrair vendas no anuncio");
+      console.log(`erro ao extrair vendas em anuncio com URL ${url}`);
     });
   return val;
 };
@@ -40,7 +40,7 @@ exports.getImageURL = async (url) => {
       imageURL = data.substring(startIndex + 5, endIndex);
     })
     .catch((err) => {
-      console.log("erro ao extrair url da imagem");
+      console.log(`erro ao extrair url da imagem em anuncio com URL ${url}`);
     });
   // console.log("getImageCall");
   return imageURL;
