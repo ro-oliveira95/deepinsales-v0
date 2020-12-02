@@ -44,13 +44,28 @@ function createChart() {
 function createEventListeners() {
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", (e) => {
-      console.log(e.target.parentElement);
       // if (e.target.parentElement.classList.contains("card")) {
       e.target.parentElement.classList.toggle("is-flipped");
       // }
       // document.querySelector(".card").classList.toggle("is-flipped");
     });
   });
+
+  document.querySelectorAll(".btn-delete").forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      if (e.target.classList.contains('fas')){
+        const itemName = e.target.parentElement.parentElement.parentElement.parentElement.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.innerHTML;
+        axios.get(`/api/v1/ads?name=${itemName}`).then(res => {
+          // console.log(res.data)
+          itemID = res.data.data[0]._id;
+          axios.delete(`/api/v1/ads/${itemID}`).then(res => {
+            console.log('sucess');
+            // loadAds();
+          }).catch(err => console.log(err.message))
+        }).catch(err => console.log(err.message))
+      }
+    })
+  })
 }
 
 function loadAds() {
@@ -70,67 +85,52 @@ function loadAds() {
               <img src="${ad.imageURL}" alt="Indisponível">
               <div class="card-content">
                 <h3>${ad.name}</h3>
-                <p>Acessos: ${
-                  typeof ad.visits[ad.visits.length - 1] == "undefined"
-                    ? "Sem registros"
-                    : ad.visits[ad.visits.length - 1]
-                }</p>
-                <p>Vendas: ${
-                  typeof ad.sells[ad.sells.length - 1] == "undefined"
-                    ? "Sem registros"
-                    : ad.sells[ad.sells.length - 1].sells
-                }</p>
-                <p>Taxa de conversão: 1</p>
-                <div class="btn-container">
-                  <button class="btn btn-details">+ detalhes</button>
+                <div class="card-front-item">
+                  <i class="fas fa-eye card-front-item-icon"></i>
+                  <p>${
+                    typeof ad.visits[ad.visits.length - 1] == "undefined"
+                      ? "Sem registros"
+                      : ad.visits[ad.visits.length - 1]
+                  }</p>
+                </div>
+                <div class="card-front-item">
+                  <i class="fas fa-shopping-cart card-front-item-icon"></i>
+                  <p>${
+                    typeof ad.sells[ad.sells.length - 1] == "undefined"
+                      ? "Sem registros"
+                      : ad.sells[ad.sells.length - 1].sells
+                  }</p>
+                </div>
+                <div class="card-front-item">
+                  <i class="fas fa-sync-alt card-front-item-icon"></i>
+                  <p>Sem registros</p>
+                </div>
+              
+              </div>
+            </div>
+            <div class="card__face card__face--back">
+                <div class="card-menu">
+                  <a class="btn-card-menu btn-delete">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                  <a class="btn-card-menu btn-download">
+                    <i class="fas fa-download"></i>
+                  </a>
+                </div>
+                <div class="card-back-content">
+                  <p><span class="card-details-index">URL</span> <a href="${
+                    ad.url
+                  }">anúncio</a></p>
                   <label class="switch">
                     <input type="checkbox" checked="true">
                     <span class="slider round"></span>
                   </label>
                 </div>
-              </div>
-            </div>
-            <div class="card__face card__face--back">
-                <div class="">
-                  <p><span class="card-details-index">URL</span> <a href="${
-                    ad.url
-                  }">anúncio</a></p>
-                  <div class="btn-container">
-                    <a href="/" class="btn-menu">
-                      <img src="./img/delete.svg" alt="" class="card-menu-icon">Deletar
-                    </a>
-                    <button class="btn btn-save">download</button>
-                  </div>
-                </div>
             </div>
           </div>
         </div>`;
 
-        // adsListHTML += `<div class="card">
-        //   <img src="${ad.imageURL}" alt="Indisponível">
-        //   <div class="card-content">
-        //     <h3>${ad.name}</h3>
-        //     <p>Acessos: ${
-        //       typeof ad.visits[ad.visits.length - 1] == "undefined"
-        //         ? "Sem registros"
-        //         : ad.visits[ad.visits.length - 1]
-        //     }</p>
-        //     <p>Vendas: ${
-        //       typeof ad.sells[ad.sells.length - 1] == "undefined"
-        //         ? "Sem registros"
-        //         : ad.sells[ad.sells.length - 1].sells
-        //     }</p>
-        //     <p>Taxa de conversão: 1</p>
-        //     <div class="btn-container">
-        //       <button class="btn btn-details">+ detalhes</button>
-        //       <label class="switch">
-        //         <input type="checkbox" checked="true">
-        //         <span class="slider round"></span>
-        //       </label>
-        //     </div>
-        //   </div>
 
-        // </div>`;
       });
 
       adDisplay.innerHTML = adsListHTML;

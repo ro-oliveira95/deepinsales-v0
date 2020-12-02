@@ -211,11 +211,12 @@ input:focus {
   height: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .card-content h3 {
   font-size: 1rem;
+  text-align: center;
   margin-bottom: 0.5rem;
 }
 
@@ -276,15 +277,52 @@ input:focus {
 
 .card__face--back {
   transform: rotateY(180deg);
+  display: flex;
+  gap: 1rem;
 }
 
 .card.is-flipped {
   transform: rotateY(180deg);
 }
 
-.card-menu-icon {
-  width: 50px;
-  height: 50px;
+.card-front-item {
+  padding: 0.1rem;
+}
+
+.card-front-item-icon {
+  font-size: 15px;
+  color: rgb(30, 90, 85);
+  display: inline;
+  margin-right: 0.3rem;
+}
+
+.card-front-item p {
+  display: inline;
+}
+
+.card-details-index {
+  font-weight: bold;
+  color: rgb(30, 90, 85);
+}
+
+.btn-card-menu {
+  font-size: 30px;
+  padding: 10px;
+}
+
+.btn-delete {
+  color: red;
+}
+
+.btn-download {
+  color: blue;
+}
+
+.card-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #888;
 }
 
 .faded-background {
