@@ -60,7 +60,7 @@ function createEventListeners() {
   document.querySelectorAll(".btn-delete").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      if (e.target.classList.contains("fas")) {
+      if (e.target.classList.contains("delete-icon")) {
         const itemName =
           e.target.parentElement.parentElement.parentElement.parentElement
             .firstElementChild.firstElementChild.nextElementSibling
@@ -104,7 +104,12 @@ function loadAds() {
             <div class="card__face card__face--front">
               <img src="${ad.imageURL}" alt="Indisponível">
               <div class="card-content">
-                <h3>${ad.name}</h3>
+                <div class="card-content-header-container">
+                  <a href="${ad.url}" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                  <h3>${ad.name}</h3>
+                </div>
                 <div class="card-front-item">
                   <i class="fas fa-eye card-front-item-icon"></i>
                   <p>${
@@ -131,16 +136,13 @@ function loadAds() {
             <div class="card__face card__face--back">
                 <div class="card-menu">
                   <a class="btn-card-menu btn-delete">
-                    <i class="fas fa-trash"></i>
+                    <i class="fas fa-trash delete-icon"></i>
                   </a>
-                  <a class="btn-card-menu btn-download">
-                    <i class="fas fa-download"></i>
+                  <a class="btn-card-menu btn-toggleChart">
+                    <i class="fas fa-chart-line"></i>
                   </a>
                 </div>
                 <div class="card-back-content">
-                  <p><span class="card-details-index">URL</span> <a href="${
-                    ad.url
-                  }">anúncio</a></p>
                   <label class="switch">
                     <input type="checkbox" checked="true">
                     <span class="slider round"></span>

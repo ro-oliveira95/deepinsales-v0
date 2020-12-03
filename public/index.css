@@ -21,6 +21,18 @@ h2 {
   text-transform: uppercase;
 }
 
+a {
+  color: rgb(97, 153, 216);
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+a:visited {
+  color: rgb(97, 153, 216);
+}
+
 .screen {
   width: 100vw;
   height: 100vh;
@@ -54,7 +66,7 @@ h2 {
   padding: 0.5rem;
   /* border: 1px solid rgb(44, 129, 118); */
   border-radius: 0.5rem;
-  background-color: rgb(157, 197, 187);
+  background-color: rgb(196, 216, 211);
 }
 
 .add-ad {
@@ -207,21 +219,42 @@ input:focus {
 }
 
 .card-content {
-  /* width: 200px; */
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
 }
 
-.card-content h3 {
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
 .card-content p {
   font-size: 0.9rem;
+}
+
+.card-content-header-container {
+  width: 100%;
+  display: flex;
+  align-items: left;
+  margin-bottom: 0.3rem;
+}
+
+/* .card-content-header-container div {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.card-content-header-container a {
+  margin-right: 0.5rem;
+}
+
+.card-content-header-container h3 {
+  /* display: inline;
+  width: 100%; */
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .btn-container {
@@ -278,6 +311,7 @@ input:focus {
 .card__face--back {
   transform: rotateY(180deg);
   display: flex;
+  flex: 1fr 1fr;
   gap: 1rem;
 }
 
