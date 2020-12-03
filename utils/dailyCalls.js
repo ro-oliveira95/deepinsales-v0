@@ -55,10 +55,22 @@ exports.updateSellsOnAllUsers = () => {
             const sells = { sells: [...ad.sells, sellsData] };
             const totalSells = { totalSells: currentTotalSells };
 
-            axios.all([
-              axios.put(`/api/v1/ads/${ad.id}`, sells, options),
-              axios.put(`/api/v1/ads/${ad.id}`, totalSells, options),
-            ]);
+            axios
+              .all([
+                axios.put(`/api/v1/ads/${ad.id}`, sells, options),
+                axios.put(`/api/v1/ads/${ad.id}`, totalSells, options),
+              ])
+              .then((res1, res2) => {
+                // console.log(res1, res2);
+              })
+              .catch((err1, err2) => {
+                if (err1) {
+                  console.log(err1.message);
+                }
+                if (err2) {
+                  console.log(err2.message);
+                }
+              });
           });
         })
         .catch((err) => {

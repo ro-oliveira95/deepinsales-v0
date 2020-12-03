@@ -23,6 +23,7 @@ connectDB();
 const ads = require("./routes/ads");
 const auth = require("./routes/auth");
 const login = require("./routes/login");
+const index = require("./routes/index");
 
 // init app
 const app = express();
@@ -54,6 +55,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/v1/ads", ads);
 app.use("/api/v1/auth", auth);
 app.use("/", login);
+app.use("/index", index);
 
 // custom errorHandler middleware
 app.use(errorHandler);

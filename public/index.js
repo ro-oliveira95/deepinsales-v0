@@ -34,6 +34,12 @@ function createChart() {
         xAxes: [
           {
             type: "time",
+            /*time: {
+              unit: "day",
+              displayFormats: {
+                day: "DD/MM h a",
+              },
+            },*/
           },
         ],
       },
@@ -52,20 +58,35 @@ function createEventListeners() {
   });
 
   document.querySelectorAll(".btn-delete").forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      if (e.target.classList.contains('fas')){
-        const itemName = e.target.parentElement.parentElement.parentElement.parentElement.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.innerHTML;
-        axios.get(`/api/v1/ads?name=${itemName}`).then(res => {
-          // console.log(res.data)
-          itemID = res.data.data[0]._id;
-          axios.delete(`/api/v1/ads/${itemID}`).then(res => {
-            console.log('sucess');
-            // loadAds();
-          }).catch(err => console.log(err.message))
-        }).catch(err => console.log(err.message))
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (e.target.classList.contains("fas")) {
+        const itemName =
+          e.target.parentElement.parentElement.parentElement.parentElement
+            .firstElementChild.firstElementChild.nextElementSibling
+            .firstElementChild.innerHTML;
+
+        axios
+          .get(`/api/v1/ads?name=${itemName}`)
+          .then((res) => {
+            // console.log(res.data)
+            params = { itemID: res.data.data[0]._id };
+            // console.log(itemID);
+
+            const options = { proxy: { host: "127.0.0.1", port: 5000 } };
+
+            axios
+              .delete(`/api/v1/ads/${params.itemID}`, options)
+              .then((res) => {
+                console.log("sucess");
+                loadAds();
+              })
+              .catch((err) => console.log(err.message));
+          })
+          .catch((err) => console.log(err.message));
       }
-    })
-  })
+    });
+  });
 }
 
 function loadAds() {
@@ -78,7 +99,6 @@ function loadAds() {
     .then((res) => {
       const ads = res.data.data;
       ads.forEach((ad) => {
-        console.log(ad.url);
         adsListHTML += `<div class="scene">
           <div class="card">
             <div class="card__face card__face--front">
@@ -129,8 +149,6 @@ function loadAds() {
             </div>
           </div>
         </div>`;
-
-
       });
 
       adDisplay.innerHTML = adsListHTML;
