@@ -311,10 +311,11 @@ input:focus {
 .card__face--back {
   transform: rotateY(180deg);
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .card-back-content {
+  width: 100%;
   height: 230px;
   overflow: hidden;
 }
@@ -356,13 +357,19 @@ input:focus {
   color: rgb(30, 90, 85);
 }
 
-.btn-card-menu i,
-.btn-delete i {
+.btn-card-menu i {
   font-size: 30px;
 }
 
+.btn-delete i {
+  font-size: 25px;
+  padding: 0.2rem;
+}
+
 .btn-delete {
-  color: red;
+  color: rgb(247, 245, 245);
+  background-color: rgb(233, 62, 62);
+  padding: 0.2rem 0.4rem;
 }
 
 .btn-download {
@@ -371,9 +378,11 @@ input:focus {
 
 .card-back-menu {
   display: flex;
-  height: 230px;
+  height: 100%;
+  width: auto;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
   transition: transform 1s;
 }
 
@@ -381,6 +390,10 @@ input:focus {
   width: 5px;
   height: 100%;
   border-right: 1px solid #888;
+}
+
+.btn-icon-activate {
+  color: rgb(61, 139, 158);
 }
 
 .faded-background {

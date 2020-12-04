@@ -91,14 +91,26 @@ function createEventListeners() {
   document.querySelectorAll(".btn-card-menu").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       if (e.target.classList.contains("menu-icon")) {
-        menu =
-          e.target.parentElement.parentElement.parentElement.firstElementChild;
-        content1 = menu.nextElementSibling.nextElementSibling.firstElementChild;
+        content1 = e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
         content2 = content1.nextElementSibling;
 
-        menu.classList.toggle("translateYneg");
-        content1.classList.toggle("translateYneg");
-        content2.classList.toggle("translateYneg");
+        if (e.target.classList.contains("fa-chart-line") && content1.classList.contains("translateYneg")){
+          content1.classList.toggle("translateYneg");
+          content2.classList.toggle("translateYneg");
+
+          btnIconSettings = e.target.parentElement.parentElement.firstElementChild.nextElementSibling.firstElementChild;
+          btnIconSettings.classList.toggle("btn-icon-activate")
+          e.target.classList.toggle("btn-icon-activate")
+
+          content2.classList.toggle("btn-icon-activate");
+        } else if (e.target.classList.contains("fa-cogs") && !content1.classList.contains("translateYneg")){
+          content1.classList.toggle("translateYneg");
+          content2.classList.toggle("translateYneg");
+
+          btnIconSettings = e.target.parentElement.parentElement.firstElementChild.firstElementChild;
+          btnIconSettings.classList.toggle("btn-icon-activate")
+          e.target.classList.toggle("btn-icon-activate")
+        }
       }
     });
   });
@@ -151,12 +163,10 @@ function loadAds() {
             <div class="card__face card__face--back">
                 <div class="card-back-menu">
                   <a class="btn-card-menu">
-                    <i class="fas fa-chart-line menu-icon"></i>
-                    <p>Plot</p>
+                    <i class="fas fa-chart-line menu-icon btn-icon-activate"></i>
                   </a>
                   <a class="btn-card-menu">
                     <i class="fas fa-cogs menu-icon"></i>
-                    <p>Ajustes</p>
                   </a>
                 </div>
                 <div class="horizontal-divider"></div>
