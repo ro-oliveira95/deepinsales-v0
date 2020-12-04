@@ -21,15 +21,15 @@ h2 {
   text-transform: uppercase;
 }
 
-a {
+.redirect-link {
   color: rgb(97, 153, 216);
 }
 
-a:hover {
+.redirect-link:hover {
   opacity: 0.7;
 }
 
-a:visited {
+.redirect-link:visited {
   color: rgb(97, 153, 216);
 }
 
@@ -311,8 +311,25 @@ input:focus {
 .card__face--back {
   transform: rotateY(180deg);
   display: flex;
-  flex: 1fr 1fr;
   gap: 1rem;
+}
+
+.card-back-content {
+  height: 230px;
+  overflow: hidden;
+}
+
+.card-back-content div {
+  height: 130px;
+  transition: transform 1s;
+}
+
+.translateYneg {
+  transform: translateY(-130px);
+}
+
+.translateYpos {
+  transform: translateY(130px);
 }
 
 .card.is-flipped {
@@ -339,9 +356,9 @@ input:focus {
   color: rgb(30, 90, 85);
 }
 
-.btn-card-menu {
+.btn-card-menu i,
+.btn-delete i {
   font-size: 30px;
-  padding: 10px;
 }
 
 .btn-delete {
@@ -352,10 +369,17 @@ input:focus {
   color: blue;
 }
 
-.card-menu {
+.card-back-menu {
   display: flex;
+  height: 230px;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  transition: transform 1s;
+}
+
+.horizontal-divider {
+  width: 5px;
+  height: 100%;
   border-right: 1px solid #888;
 }
 

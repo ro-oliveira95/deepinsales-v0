@@ -87,6 +87,21 @@ function createEventListeners() {
       }
     });
   });
+
+  document.querySelectorAll(".btn-card-menu").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      if (e.target.classList.contains("menu-icon")) {
+        menu =
+          e.target.parentElement.parentElement.parentElement.firstElementChild;
+        content1 = menu.nextElementSibling.nextElementSibling.firstElementChild;
+        content2 = content1.nextElementSibling;
+
+        menu.classList.toggle("translateYneg");
+        content1.classList.toggle("translateYneg");
+        content2.classList.toggle("translateYneg");
+      }
+    });
+  });
 }
 
 function loadAds() {
@@ -105,7 +120,7 @@ function loadAds() {
               <img src="${ad.imageURL}" alt="Indisponível">
               <div class="card-content">
                 <div class="card-content-header-container">
-                  <a href="${ad.url}" target="_blank">
+                  <a href="${ad.url}" target="_blank" class="redirect-link">
                     <i class="fas fa-external-link-alt"></i>
                   </a>
                   <h3>${ad.name}</h3>
@@ -134,19 +149,32 @@ function loadAds() {
               </div>
             </div>
             <div class="card__face card__face--back">
-                <div class="card-menu">
-                  <a class="btn-card-menu btn-delete">
-                    <i class="fas fa-trash delete-icon"></i>
+                <div class="card-back-menu">
+                  <a class="btn-card-menu">
+                    <i class="fas fa-chart-line menu-icon"></i>
+                    <p>Plot</p>
                   </a>
-                  <a class="btn-card-menu btn-toggleChart">
-                    <i class="fas fa-chart-line"></i>
+                  <a class="btn-card-menu">
+                    <i class="fas fa-cogs menu-icon"></i>
+                    <p>Ajustes</p>
                   </a>
                 </div>
+                <div class="horizontal-divider"></div>
                 <div class="card-back-content">
-                  <label class="switch">
-                    <input type="checkbox" checked="true">
-                    <span class="slider round"></span>
-                  </label>
+                  <div class="content-1">
+                    <h3>Plot</h3>
+                    <label class="switch">
+                      <input type="checkbox" checked="true">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <div class="content-2">
+                    <h3>Propriedades</h3>
+                    <a class="btn-delete">
+                      <i class="fas fa-trash delete-icon"></i>
+                      Deletar anúncio
+                    </a>
+                  </div>
                 </div>
             </div>
           </div>
