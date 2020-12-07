@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-exports.getAdDataFromId = async (mlAdID) => {
-  const url = `https://api.mercadolibre.com/items/${mlAdID}`;
+exports.getAdDataFromId = async (mlIdList) => {
+  const url = `https://api.mercadolibre.com/items/${String(mlIdList)}`;
 
   let adData;
 
@@ -16,6 +16,22 @@ exports.getAdDataFromId = async (mlAdID) => {
     });
   return adData;
 };
+
+exports.getAdVisitsFromId = async (mlIdList) => {
+  const url = `https://api.mercadolibre.com/visits/items?ids=${String(mlIdList)}`;
+  let adData;
+
+  await axios
+    .get(url)
+    .then((res) => {
+      console.log(res);
+      adData = res;
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  return adData;
+}
 
 exports.getMlAdIDFromURL = async (adURL) => {
   url = new URL(adURL);

@@ -9,7 +9,7 @@ const AdSchema = new mongoose.Schema({
     default: "",
   },
   slug: String,
-  adId: String,
+  mlId: String,
   imageUrl: String,
   listingType: String,
   status: String,
@@ -39,9 +39,9 @@ const AdSchema = new mongoose.Schema({
 // Adding a Mongoose Middleware to create the slug before saving to DB
 AdSchema.pre("save", async function (next) {
   this.slug = slufigy(this.name, { lower: true });
-  this.adId = await getMlAdIDFromURL(this.url);
+  this.mlId = await getMlAdIDFromURL(this.url);
 
-  adInfo = await getAdDataFromId(this.adId);
+  adInfo = await getAdDataFromId(this.mlId);
 
   if (this.name === "") {
     this.name = adInfo.name;

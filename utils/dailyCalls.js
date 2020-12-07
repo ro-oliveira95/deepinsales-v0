@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { readSellsOnAd } = require("./acqDataOnPages");
+const {getAdDataFromId, getAdVisitsFromId} = require("./callToML")
 
 exports.updateSellsOnAllUsers = () => {
   console.log("reading sells data...");
@@ -29,15 +30,38 @@ exports.updateSellsOnAllUsers = () => {
           ads = allAds.map((ad) => {
             return {
               id: ad._id,
-              name: ad.name,
-              url: ad.url,
-              sells: ad.sells,
-              totalSells: ad.totalSells,
+              mlId: ad.mlId,
+              status: ad.status,
+              listingType: ad.listingType,
+              acumulatedSells: ad.acumulatedSells,
+              dailySells: ad.dailySells,
+              acumulatedVisitis: ad.acumulatedVisitis,
+              dailyVisitis: ad.dailyVisitis,
             };
           });
 
+          let mlIdList = [];
+          
+          ads.forEach(ad => {mlIdList.push(ad.mlId)})
+          
+          adsBasicInfo = await getAdDataFromId(mlIdList);
+          adsVisits = await getAdVisitsFromId(mlIdList);
+
+          for (let i=0;i<adsBasicInfo.length;i++){
+            status = adBasicInfo[i].status;
+            listingType = adBasicInfo[i].listingType;
+            currentTotalSells = adBasicInfo[i].sold_quantity;
+            currentTotalVisits = adVisits[i].visits;
+
+          }
+
           ads.forEach(async (ad) => {
-            const currentTotalSells = await readSellsOnAd(ad.url);
+
+            
+            status = adBasicInfo.status;
+            listingType = adBasicInfo.listingType;
+            currentTotalSells = adBasicInfo.sold_quantity;
+            currentTotalVisits = adVisits.visits;
 
             const dailySell = currentTotalSells - ad.totalSells;
 
