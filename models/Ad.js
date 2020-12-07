@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 const slufigy = require("slugify");
 const { getImageURL, readSellsOnAd } = require("../utils/acqDataOnPages");
+const { getAdDataFromId, getMlAdIDFromURL } = require("../utils/callToML");
 
 const AdSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please add a name"],
+    default: "",
   },
   slug: String,
+  adId: String,
+  imageUrl: String,
+  listingType: String,
+  status: String,
   url: {
     type: String,
     match: [
@@ -16,25 +21,14 @@ const AdSchema = new mongoose.Schema({
     ],
     unique: [true, "Please add a URL that isn't already stored"],
   },
-  sells: [{ timestamp: Date, sells: Number }],
-  visits: [Number],
-  totalSells: {
-    type: Number,
-    default: 0,
-  },
-  totalVisits: {
-    type: Number,
-    default: 0,
-  },
-  conversionRate: {
-    type: Number,
-    default: 0,
-  },
+  acumulatedSells: [{ timestamp: Date, sells: Number }],
+  acumulatedDVisits: [{ timestamp: Date, sells: Number }],
+  dailySells: [{ timestamp: Date, sells: Number }],
+  dailyVisits: [{ timestamp: Date, sells: Number }],
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  imageURL: String,
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
@@ -45,9 +39,21 @@ const AdSchema = new mongoose.Schema({
 // Adding a Mongoose Middleware to create the slug before saving to DB
 AdSchema.pre("save", async function (next) {
   this.slug = slufigy(this.name, { lower: true });
-  this.imageURL = await getImageURL(this.url);
-  this.totalSells = await readSellsOnAd(this.url);
-  console.log(this.imageURL);
+  this.adId = await getMlAdIDFromURL(this.url);
+
+  adInfo = await getAdDataFromId(this.adId);
+
+  if (this.name === "") {
+    this.name = adInfo.name;
+  }
+
+  this.imageUrl = adInfo.secure_thumbnail;
+  this.listingType = adInfo.listing_type_id;
+  this.status = adInfo.status;
+
+  //this.imageURL = await getImageURL(this.url);
+  //this.totalSells = await readSellsOnAd(this.url);
+
   next();
 });
 

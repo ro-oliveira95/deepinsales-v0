@@ -60,18 +60,16 @@ function createEventListeners() {
   document.querySelectorAll(".btn-delete").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      if (e.target.classList.contains("delete-icon")) {
+      if (e.target.classList.contains("btn-delete")) {
         const itemName =
           e.target.parentElement.parentElement.parentElement.parentElement
             .firstElementChild.firstElementChild.nextElementSibling
-            .firstElementChild.innerHTML;
+            .firstElementChild.firstElementChild.nextElementSibling.innerHTML;
 
         axios
           .get(`/api/v1/ads?name=${itemName}`)
           .then((res) => {
-            // console.log(res.data)
             params = { itemID: res.data.data[0]._id };
-            // console.log(itemID);
 
             const options = { proxy: { host: "127.0.0.1", port: 5000 } };
 
@@ -91,25 +89,37 @@ function createEventListeners() {
   document.querySelectorAll(".btn-card-menu").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       if (e.target.classList.contains("menu-icon")) {
-        content1 = e.target.parentElement.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
+        content1 =
+          e.target.parentElement.parentElement.parentElement.firstElementChild
+            .nextElementSibling.nextElementSibling.firstElementChild;
         content2 = content1.nextElementSibling;
 
-        if (e.target.classList.contains("fa-chart-line") && content1.classList.contains("translateYneg")){
-          content1.classList.toggle("translateYneg");
-          content2.classList.toggle("translateYneg");
+        if (
+          e.target.classList.contains("fa-chart-line") &&
+          content1.classList.contains("translateY")
+        ) {
+          content1.classList.toggle("translateY");
+          content2.classList.toggle("translateY");
 
-          btnIconSettings = e.target.parentElement.parentElement.firstElementChild.nextElementSibling.firstElementChild;
-          btnIconSettings.classList.toggle("btn-icon-activate")
-          e.target.classList.toggle("btn-icon-activate")
+          btnIconSettings =
+            e.target.parentElement.parentElement.firstElementChild
+              .nextElementSibling.firstElementChild;
+          btnIconSettings.parentElement.classList.toggle("btn-icon-activate");
+          e.target.parentElement.classList.toggle("btn-icon-activate");
 
           content2.classList.toggle("btn-icon-activate");
-        } else if (e.target.classList.contains("fa-cogs") && !content1.classList.contains("translateYneg")){
-          content1.classList.toggle("translateYneg");
-          content2.classList.toggle("translateYneg");
+        } else if (
+          e.target.classList.contains("fa-cogs") &&
+          !content1.classList.contains("translateY")
+        ) {
+          content1.classList.toggle("translateY");
+          content2.classList.toggle("translateY");
 
-          btnIconSettings = e.target.parentElement.parentElement.firstElementChild.firstElementChild;
-          btnIconSettings.classList.toggle("btn-icon-activate")
-          e.target.classList.toggle("btn-icon-activate")
+          btnIconSettings =
+            e.target.parentElement.parentElement.firstElementChild
+              .firstElementChild;
+          btnIconSettings.parentElement.classList.toggle("btn-icon-activate");
+          e.target.parentElement.classList.toggle("btn-icon-activate");
         }
       }
     });
@@ -129,7 +139,7 @@ function loadAds() {
         adsListHTML += `<div class="scene">
           <div class="card">
             <div class="card__face card__face--front">
-              <img src="${ad.imageURL}" alt="Indisponível">
+              <img src="${ad.imageUrl}" alt="Indisponível">
               <div class="card-content">
                 <div class="card-content-header-container">
                   <a href="${ad.url}" target="_blank" class="redirect-link">
@@ -140,7 +150,8 @@ function loadAds() {
                 <div class="card-front-item">
                   <i class="fas fa-eye card-front-item-icon"></i>
                   <p>${
-                    typeof ad.visits[ad.visits.length - 1] == "undefined"
+                    typeof ad.acumulatedVisits[ad.visits.length - 1] ==
+                    "undefined"
                       ? "Sem registros"
                       : ad.visits[ad.visits.length - 1]
                   }</p>
@@ -161,31 +172,41 @@ function loadAds() {
               </div>
             </div>
             <div class="card__face card__face--back">
-                <div class="card-back-menu">
-                  <a class="btn-card-menu">
-                    <i class="fas fa-chart-line menu-icon btn-icon-activate"></i>
-                  </a>
-                  <a class="btn-card-menu">
-                    <i class="fas fa-cogs menu-icon"></i>
-                  </a>
-                </div>
-                <div class="horizontal-divider"></div>
-                <div class="card-back-content">
-                  <div class="content-1">
-                    <h3>Plot</h3>
+              <div class="card-back-menu">
+                <a class="btn-card-menu btn-icon-activate">
+                  <i class="fas fa-chart-line menu-icon"></i>
+                  Gráfico                  
+                </a>
+                <a class="btn-card-menu">
+                  <i class="fas fa-cogs menu-icon"></i>
+                  Ajustes
+                </a>
+              </div>
+              <div class="horizontal-divider"></div>
+              <div class="card-back-content">
+                <div class="content-1">
+                  <div class="switch-container">
                     <label class="switch">
                       <input type="checkbox" checked="true">
                       <span class="slider round"></span>
                     </label>
-                  </div>
-                  <div class="content-2">
-                    <h3>Propriedades</h3>
-                    <a class="btn-delete">
-                      <i class="fas fa-trash delete-icon"></i>
-                      Deletar anúncio
-                    </a>
-                  </div>
+                    <p>Acumulado</p>
+                    </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" checked="true">
+                      <span class="slider round"></span>
+                    </label>
+                    <p>Diário</p>
+                    </div>  
                 </div>
+                <div class="content-2">
+                  <button class="btn btn-delete">
+                    <i class="fas fa-trash delete-icon"></i>
+                    Deletar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>`;

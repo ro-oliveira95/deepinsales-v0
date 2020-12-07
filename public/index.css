@@ -159,17 +159,19 @@ h2 {
 }
 
 .btn {
-  padding: 0.5rem 1rem;
-  background-color: rgb(112, 214, 180);
   outline: none !important;
-  border: solid 1px rgb(19, 66, 60);
-  color: 222;
-  font-size: 1.1rem;
   transition: all 0.2s;
 }
 
 .btn:hover {
-  background-color: rgb(67, 231, 209);
+  opacity: 0.8;
+}
+
+.btn-add-ad {
+  padding: 0.5rem 1rem;
+  background-color: rgb(112, 214, 180);
+  border: solid 1px rgb(19, 66, 60);
+  font-size: 1.1rem;
 }
 
 .btn-details {
@@ -309,7 +311,7 @@ input:focus {
 } */
 
 .card__face--back {
-  transform: rotateY(180deg);
+  transform: rotateX(180deg);
   display: flex;
   gap: 0.5rem;
 }
@@ -320,21 +322,25 @@ input:focus {
   overflow: hidden;
 }
 
-.card-back-content div {
+.card-back-content > div {
   height: 130px;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
   transition: transform 1s;
 }
 
-.translateYneg {
+.switch-container {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.translateY {
   transform: translateY(-130px);
 }
 
-.translateYpos {
-  transform: translateY(130px);
-}
-
 .card.is-flipped {
-  transform: rotateY(180deg);
+  transform: rotateX(180deg);
 }
 
 .card-front-item {
@@ -357,19 +363,29 @@ input:focus {
   color: rgb(30, 90, 85);
 }
 
-.btn-card-menu i {
-  font-size: 30px;
+.btn-card-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
 }
 
-.btn-delete i {
-  font-size: 25px;
-  padding: 0.2rem;
+.btn-card-menu i {
+  font-size: 30px;
 }
 
 .btn-delete {
   color: rgb(247, 245, 245);
   background-color: rgb(233, 62, 62);
+  border: none;
+  border-radius: 0.5rem;
   padding: 0.2rem 0.4rem;
+}
+
+.btn-delete i {
+  /*font-size: 25px;*/
+  padding: 0.2rem;
 }
 
 .btn-download {
@@ -432,14 +448,6 @@ input:focus {
   }
 }
 
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 45px;
-  height: 25px;
-}
-
 /* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
@@ -447,6 +455,13 @@ input:focus {
   height: 0;
 }
 
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 1.2rem;
+}
 /* The slider */
 .slider {
   position: absolute;
@@ -463,10 +478,10 @@ input:focus {
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 4px;
+  height: 0.9rem;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -481,14 +496,14 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(18px);
-  -ms-transform: translateX(18px);
-  transform: translateX(18px);
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 0.9rem;
 }
 
 .slider.round:before {
