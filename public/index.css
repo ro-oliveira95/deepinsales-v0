@@ -225,11 +225,17 @@ input:focus {
   height: auto;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   /* align-items: center; */
 }
 
 .card-content p {
   font-size: 0.9rem;
+}
+
+.card-content-info-container {
+  display: flex;
+  justify-content: center;
 }
 
 .card-content-header-container {
@@ -273,11 +279,13 @@ input:focus {
   /* grid-template-rows: auto auto auto auto auto; */
   /* grid-auto-flow: row; */
   gap: 1rem;
+  max-height: 850px;
+  overflow-y: auto;
 }
 
 .scene {
   /* width: 100%; */
-  height: 130px;
+  height: 120px;
   perspective: 600px;
 }
 
@@ -304,6 +312,26 @@ input:focus {
   box-shadow: 1px -1px 10px -41px rgba(0, 0, 0, 0.7);
   -webkit-box-shadow: 1px -1px 10px -41px rgba(0, 0, 0, 0.7);
   -moz-box-shadow: 1px -1px 10px -41px rgba(0, 0, 0, 0.7);
+}
+
+.btn-flip {
+  position: relative;
+  top: 90px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(44, 129, 118);
+  transform: rotate(45deg);
+}
+
+.btn-flip-2 {
+  position: relative;
+  top: 90px;
+  left: 15px;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(44, 129, 118);
+  transform: rotate(45deg);
 }
 
 /* .card__face--front {

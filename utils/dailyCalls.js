@@ -1,10 +1,7 @@
 const axios = require("axios");
-const { readSellsOnAd } = require("./acqDataOnPages");
-const {getAdDataFromId, getAdVisitsFromId} = require("./callToML")
+const { getAdDataFromId, getAdVisitsFromId } = require("./callToML");
 
 exports.updateSellsOnAllUsers = () => {
-  console.log("reading sells data...");
-
   data = {
     email: process.env.ADMIN_EMAIL,
     password: process.env.ADMIN_PASSWORD,
@@ -25,85 +22,109 @@ exports.updateSellsOnAllUsers = () => {
 
       axios
         .get("/api/v1/ads", options)
-        .then((res) => {
-          allAds = res.data.data;
-          ads = allAds.map((ad) => {
-            return {
-              id: ad._id,
-              mlId: ad.mlId,
-              status: ad.status,
-              listingType: ad.listingType,
-              acumulatedSells: ad.acumulatedSells,
-              dailySells: ad.dailySells,
-              acumulatedVisitis: ad.acumulatedVisitis,
-              dailyVisitis: ad.dailyVisitis,
-            };
-          });
+        .then(async (res) => {
+          ads = res.data.data;
+
+          if (ads.length === 0) {
+            return;
+          }
 
           let mlIdList = [];
-          
-          ads.forEach(ad => {mlIdList.push(ad.mlId)})
-          
+
+          ads.forEach((ad) => {
+            mlIdList.push(ad.mlId);
+          });
+
           adsBasicInfo = await getAdDataFromId(mlIdList);
           adsVisits = await getAdVisitsFromId(mlIdList);
 
-          for (let i=0;i<adsBasicInfo.length;i++){
-            status = adBasicInfo[i].status;
-            listingType = adBasicInfo[i].listingType;
-            currentTotalSells = adBasicInfo[i].sold_quantity;
-            currentTotalVisits = adVisits[i].visits;
+          // ads.forEach((ad, index) => {
+          //   console.log(index);
+          //   outerIndex = Math.floor(index / 10);
 
-          }
+          //   if (mlIdList[outerIndex] == null) {
+          //     mlIdList[outerIndex] = [];
+          //   }
 
-          ads.forEach(async (ad) => {
+          //   mlIdList[outerIndex].push(ad.mlId);
+          // });
 
-            
-            status = adBasicInfo.status;
-            listingType = adBasicInfo.listingType;
-            currentTotalSells = adBasicInfo.sold_quantity;
-            currentTotalVisits = adVisits.visits;
+          // adsBasicInfo = [];
+          // adsVisits = [];
 
-            const dailySell = currentTotalSells - ad.totalSells;
+          // mlIdList.forEach(async (idList) => {
+          //   adsBasicInfo = adsBasicInfo.concat(await getAdDataFromId(idList));
+          //   adsVisits = adsVisits.concat(await getAdVisitsFromId(idList));
+          // });
 
-            let acumulatedDailySells = dailySell;
+          adsBasicInfo.forEach(async (mlAdInfo) => {
+            status = mlAdInfo.status;
+            listingType = mlAdInfo.listingType;
+            currentTotalSells = mlAdInfo.sold_quantity;
+            currentTotalVisits = adsVisits[mlAdInfo.id];
 
-            if (ad.sells.length !== 0) {
-              acumulatedDailySells += ad.sells[ad.sells.length - 1].sells;
-            }
+            ad = ads.filter((ad) => {
+              return ad.mlId === mlAdInfo.id;
+            });
 
-            const sellsData = {
-              timestamp: new Date(),
-              sells: acumulatedDailySells,
+            ad = ad[0];
+
+            id = ad._id;
+            pastTotalSells = ad.totalSells;
+            pastTotalVisits = ad.totalVisits;
+
+            lastSellRecord =
+              ad.acumulatedSells[ad.acumulatedSells.length - 1].sells;
+            lastVisitRecord =
+              ad.acumulatedVisits[ad.acumulatedVisits.length - 1].visits;
+
+            dailySell = currentTotalSells - pastTotalSells;
+            dailyVisit = currentTotalVisits - pastTotalVisits;
+
+            acumulatedSell = lastSellRecord + dailySell;
+            acumulatedVisit = lastVisitRecord + dailyVisit;
+
+            updatedData = {
+              acumulatedSells: [
+                ...ad.acumulatedSells,
+                { timestamp: Date.now(), sells: acumulatedSell },
+              ],
+              acumulatedVisits: [
+                ...ad.acumulatedVisits,
+                { timestamp: Date.now(), visits: acumulatedVisit },
+              ],
+              dailySells: [
+                ...ad.dailySells,
+                { timestamp: Date.now(), sells: dailySell },
+              ],
+              dailyVisits: [
+                ...ad.dailyVisits,
+                { timestamp: Date.now(), visits: dailyVisit },
+              ],
+              totalSells: currentTotalSells,
+              totalVisits: currentTotalVisits,
+              status: status,
+              listingType: listingType,
             };
 
-            const sells = { sells: [...ad.sells, sellsData] };
-            const totalSells = { totalSells: currentTotalSells };
-
-            axios
-              .all([
-                axios.put(`/api/v1/ads/${ad.id}`, sells, options),
-                axios.put(`/api/v1/ads/${ad.id}`, totalSells, options),
-              ])
-              .then((res1, res2) => {
-                // console.log(res1, res2);
+            await axios
+              .put(`/api/v1/ads/${id}`, updatedData, options)
+              .then((res) => {
+                console.log("sucess");
               })
-              .catch((err1, err2) => {
-                if (err1) {
-                  console.log(err1.message);
-                }
-                if (err2) {
-                  console.log(err2.message);
-                }
+              .catch((err) => {
+                console.log("fail");
+                console.log(err.message);
               });
           });
         })
         .catch((err) => {
           console.log("erro no get de todos os ads");
-          console.log(err);
+          console.log(err.message);
         });
     })
     .catch((err) => {
       console.log("erro ao logar como admin para get de todos os anuncios");
-      console.log(err);
+      console.log(err.message);
     });
 };

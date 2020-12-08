@@ -1,15 +1,20 @@
 const axios = require("axios");
 
 exports.getAdDataFromId = async (mlIdList) => {
-  const url = `https://api.mercadolibre.com/items/${String(mlIdList)}`;
+  // adList = String(mlIdList);
+  // console.log(adList);
+
+  const url = `https://api.mercadolibre.com/items?ids=${String(mlIdList)}`;
 
   let adData;
 
   await axios
     .get(url)
     .then((res) => {
-      console.log(res);
-      adData = res;
+      // console.log(res);
+      adData = res.data.map((data) => {
+        return data.body;
+      });
     })
     .catch((err) => {
       console.log(err.message);
@@ -18,20 +23,22 @@ exports.getAdDataFromId = async (mlIdList) => {
 };
 
 exports.getAdVisitsFromId = async (mlIdList) => {
-  const url = `https://api.mercadolibre.com/visits/items?ids=${String(mlIdList)}`;
+  const url = `https://api.mercadolibre.com/visits/items?ids=${String(
+    mlIdList
+  )}`;
   let adData;
 
   await axios
     .get(url)
     .then((res) => {
-      console.log(res);
-      adData = res;
+      // console.log(res);
+      adData = res.data;
     })
     .catch((err) => {
       console.log(err.message);
     });
   return adData;
-}
+};
 
 exports.getMlAdIDFromURL = async (adURL) => {
   url = new URL(adURL);
@@ -50,13 +57,13 @@ exports.getMlAdIDFromURL = async (adURL) => {
 
     adID = await getMlAdIDFromSearch(queryName, permalink);
   }
-  console.log(adID);
+  // console.log(adID);
   return adID;
 };
 
 async function getMlAdIDFromSearch(query, permalink) {
   let adID;
-  console.log(`query: ${query}`);
+  // console.log(`query: ${query}`);
   await axios
     .get(`https://api.mercadolibre.com/sites/MLB/search?q=${query}`)
     .then((res) => {

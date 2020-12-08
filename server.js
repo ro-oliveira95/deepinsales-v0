@@ -29,13 +29,13 @@ const index = require("./routes/index");
 const app = express();
 
 // body parser - needed to pass JSON content on the body of the requisition
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // cookie parser
 app.use(cookieParser());
 
 // body parser to receive form data in req.body
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 // setting the view engine
 app.set("view engine", "ejs");

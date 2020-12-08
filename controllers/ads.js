@@ -54,7 +54,7 @@ exports.getAds = asyncHandler(async (req, res, next) => {
 
   // pagination
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 10;
+  const limit = parseInt(req.query.limit, 10) || 99999;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const total = await Ad.countDocuments();
@@ -131,16 +131,6 @@ exports.updateAd = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Ad not found with id of ${req.params.id}`, 404)
     );
   }
-
-  // check if user is ad owner
-  // if (ad.user.toString() !== req.user.id) {
-  //   return next(
-  //     new ErrorResponse(
-  //       `User ${req.user.id} not authorized to update this ad`,
-  //       401
-  //     )
-  //   );
-  // }
 
   res.status(200).json({ success: true, data: ad });
 });

@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 const slufigy = require("slugify");
 const { getImageURL, readSellsOnAd } = require("../utils/acqDataOnPages");
-const { getAdDataFromId, getMlAdIDFromURL } = require("../utils/callToML");
+const {
+  getAdDataFromId,
+  getMlAdIDFromURL,
+  getAdVisitsFromId,
+} = require("../utils/callToML");
 
 const AdSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: "",
+    unique: [true, "Please add an unused name"],
   },
   slug: String,
   mlId: String,
@@ -22,9 +26,14 @@ const AdSchema = new mongoose.Schema({
     unique: [true, "Please add a URL that isn't already stored"],
   },
   acumulatedSells: [{ timestamp: Date, sells: Number }],
-  acumulatedDVisits: [{ timestamp: Date, sells: Number }],
+  acumulatedVisits: [{ timestamp: Date, visits: Number }],
   dailySells: [{ timestamp: Date, sells: Number }],
-  dailyVisits: [{ timestamp: Date, sells: Number }],
+  dailyVisits: [{ timestamp: Date, visits: Number }],
+  totalSells: Number,
+  totalVisits: Number,
+  rgb: [Number, Number, Number],
+  category: String,
+  seller: String,
   createdAt: {
     type: Date,
     default: Date.now,
@@ -38,21 +47,33 @@ const AdSchema = new mongoose.Schema({
 
 // Adding a Mongoose Middleware to create the slug before saving to DB
 AdSchema.pre("save", async function (next) {
-  this.slug = slufigy(this.name, { lower: true });
   this.mlId = await getMlAdIDFromURL(this.url);
 
   adInfo = await getAdDataFromId(this.mlId);
+  adVisits = await getAdVisitsFromId(this.mlId);
 
   if (this.name === "") {
-    this.name = adInfo.name;
+    this.name = adInfo[0].title;
   }
+  this.slug = slufigy(this.name, { lower: true });
 
-  this.imageUrl = adInfo.secure_thumbnail;
-  this.listingType = adInfo.listing_type_id;
-  this.status = adInfo.status;
+  this.acumulatedVisits = [{ timestamp: this.createdAt, visits: 0 }];
+  this.acumulatedSells = [{ timestamp: this.createdAt, sells: 0 }];
+  this.dailyVisits = [{ timestamp: this.createdAt, visits: 0 }];
+  this.dailySells = [{ timestamp: this.createdAt, sells: 0 }];
 
-  //this.imageURL = await getImageURL(this.url);
-  //this.totalSells = await readSellsOnAd(this.url);
+  this.totalSells = adInfo[0].sold_quantity;
+  this.totalVisits = adVisits[this.mlId];
+
+  this.imageUrl = adInfo[0].secure_thumbnail;
+  this.listingType = adInfo[0].listing_type_id;
+  this.status = adInfo[0].status;
+
+  this.rgb = [
+    Math.floor(Math.random() * 255),
+    Math.floor(Math.random() * 255),
+    Math.floor(Math.random() * 255),
+  ];
 
   next();
 });

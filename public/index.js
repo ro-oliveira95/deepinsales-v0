@@ -4,12 +4,25 @@ document.addEventListener("DOMContentLoaded", loadAds);
 
 // init global variables
 let chart;
+let plotData = {};
 
 function updateChart(data) {
   chart.data.datasets = [];
   data.forEach((dataset) => {
     chart.data.datasets.push(dataset);
   });
+  chart.update();
+}
+
+function removePlot(label) {
+  chart.data.datasets = chart.data.datasets.filter((plot) => {
+    return plot.label != label;
+  });
+  chart.update();
+}
+
+function insertPlot(label) {
+  chart.data.datasets.push(plotData[label]);
   chart.update();
 }
 
@@ -26,8 +39,25 @@ function createChart() {
       scales: {
         yAxes: [
           {
+            position: "left",
+            id: "y-axis-0",
             ticks: {
               beginAtZero: true,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: "Acumuladas",
+            },
+          },
+          {
+            position: "right",
+            id: "y-axis-1",
+            ticks: {
+              beginAtZero: true,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: "Diárias",
             },
           },
         ],
@@ -48,10 +78,12 @@ function createChart() {
 }
 
 function createEventListeners() {
-  document.querySelectorAll(".card").forEach((card) => {
-    card.addEventListener("click", (e) => {
+  document.querySelectorAll(".btn-flip").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      // console.log("test");
+
       // if (e.target.parentElement.classList.contains("card")) {
-      e.target.parentElement.classList.toggle("is-flipped");
+      e.target.parentElement.parentElement.classList.toggle("is-flipped");
       // }
       // document.querySelector(".card").classList.toggle("is-flipped");
     });
@@ -124,6 +156,39 @@ function createEventListeners() {
       }
     });
   });
+
+  document.querySelectorAll(".switch").forEach((input) => {
+    input.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("slider")) {
+        return;
+      }
+
+      type = e.target.parentElement.nextElementSibling.innerHTML;
+
+      if (type === "Diário") {
+        type = "diário";
+      } else {
+        type = "acumulado";
+      }
+
+      adName =
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .parentElement.parentElement.firstElementChild.firstElementChild
+          .nextElementSibling.firstElementChild.firstElementChild
+          .nextElementSibling.innerHTML;
+
+      label = adName + " - " + type;
+
+      console.log(e.target.previousElementSibling.checked);
+
+      if (e.target.previousElementSibling.checked) {
+        // desabling
+        removePlot(label);
+      } else {
+        insertPlot(label);
+      }
+    });
+  });
 }
 
 function loadAds() {
@@ -135,7 +200,18 @@ function loadAds() {
     .get("/api/v1/ads")
     .then((res) => {
       const ads = res.data.data;
+      let data = [];
       ads.forEach((ad) => {
+        totalSells = ad.acumulatedSells[ad.acumulatedSells.length - 1].sells;
+        totalVisits =
+          ad.acumulatedVisits[ad.acumulatedVisits.length - 1].visits;
+
+        conversionRate = Math.round((totalSells / totalVisits) * 100);
+
+        if (Number.isNaN(conversionRate) || conversionRate === Infinity) {
+          conversionRate = 0;
+        }
+
         adsListHTML += `<div class="scene">
           <div class="card">
             <div class="card__face card__face--front">
@@ -147,29 +223,23 @@ function loadAds() {
                   </a>
                   <h3>${ad.name}</h3>
                 </div>
-                <div class="card-front-item">
-                  <i class="fas fa-eye card-front-item-icon"></i>
-                  <p>${
-                    typeof ad.acumulatedVisits[ad.visits.length - 1] ==
-                    "undefined"
-                      ? "Sem registros"
-                      : ad.visits[ad.visits.length - 1]
-                  }</p>
-                </div>
-                <div class="card-front-item">
-                  <i class="fas fa-shopping-cart card-front-item-icon"></i>
-                  <p>${
-                    typeof ad.sells[ad.sells.length - 1] == "undefined"
-                      ? "Sem registros"
-                      : ad.sells[ad.sells.length - 1].sells
-                  }</p>
-                </div>
-                <div class="card-front-item">
-                  <i class="fas fa-sync-alt card-front-item-icon"></i>
-                  <p>Sem registros</p>
+                <div class="card-content-info-container">
+                  <div class="card-front-item">
+                    <i class="fas fa-eye card-front-item-icon"></i>
+                    <p>${totalVisits}</p>
+                  </div>
+                  <div class="card-front-item">
+                    <i class="fas fa-shopping-cart card-front-item-icon"></i>
+                    <p>${totalSells}</p>
+                  </div>
+                  <div class="card-front-item">
+                    <i class="fas fa-sync-alt card-front-item-icon"></i>
+                    <p>${conversionRate}%</p>
+                  </div>
                 </div>
               
               </div>
+              <div class="btn-flip"></div>
             </div>
             <div class="card__face card__face--back">
               <div class="card-back-menu">
@@ -187,14 +257,14 @@ function loadAds() {
                 <div class="content-1">
                   <div class="switch-container">
                     <label class="switch">
-                      <input type="checkbox" checked="true">
+                      <input type="checkbox" checked="true" class="switch">
                       <span class="slider round"></span>
                     </label>
                     <p>Acumulado</p>
                     </div>
                   <div class="switch-container">
                     <label class="switch">
-                      <input type="checkbox" checked="true">
+                      <input type="checkbox" class="switch">
                       <span class="slider round"></span>
                     </label>
                     <p>Diário</p>
@@ -207,32 +277,46 @@ function loadAds() {
                   </button>
                 </div>
               </div>
+              <div class="btn-flip btn-flip-2"></div>
             </div>
           </div>
+          
         </div>`;
-      });
 
-      adDisplay.innerHTML = adsListHTML;
+        adDisplay.innerHTML = adsListHTML;
 
-      let data = [];
-
-      ads.forEach((ad) => {
-        const sellsData = ad.sells.map((sell) => {
+        const acumulatedSells = ad.acumulatedSells.map((sell) => {
           date = moment(sell.timestamp);
 
           return { x: date, y: sell.sells };
         });
 
-        series = {
-          label: ad.name,
+        const dailySells = ad.dailySells.map((sell) => {
+          date = moment(sell.timestamp);
+
+          return { x: date, y: sell.sells };
+        });
+
+        seriesAcumulatedSells = {
+          label: `${ad.name} - acumulado`,
           fill: false,
-          borderColor: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-            Math.random() * 255
-          )}, ${Math.floor(Math.random() * 255)})`,
-          data: sellsData,
+          borderColor: `rgba(${ad.rgb[0]}, ${ad.rgb[1]}, ${ad.rgb[2]}, 1)`,
+          data: acumulatedSells,
+          yAxisID: "y-axis-0",
         };
 
-        data.push(series);
+        seriesDailySells = {
+          label: `${ad.name} - diário`,
+          fill: false,
+          borderColor: `rgba(${ad.rgb[0]}, ${ad.rgb[1]}, ${ad.rgb[2]}, 0.5)`,
+          data: dailySells,
+          yAxisID: "y-axis-1",
+        };
+
+        data.push(seriesAcumulatedSells);
+        // data.push(seriesDailySells);
+        plotData[`${ad.name} - diário`] = seriesDailySells;
+        plotData[`${ad.name} - acumulado`] = seriesAcumulatedSells;
       });
       createEventListeners();
       updateChart(data);
