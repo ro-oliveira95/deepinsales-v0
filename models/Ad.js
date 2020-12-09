@@ -62,7 +62,8 @@ AdSchema.pre("save", async function (next) {
   this.dailyVisits = [{ timestamp: this.createdAt, visits: 0 }];
   this.dailySells = [{ timestamp: this.createdAt, sells: 0 }];
 
-  this.totalSells = adInfo[0].sold_quantity;
+  // this.totalSells = adInfo[0].sold_quantity;
+  this.totalSells = await readSellsOnAd(adInfo[0].permalink);
   this.totalVisits = adVisits[this.mlId];
 
   this.imageUrl = adInfo[0].secure_thumbnail;

@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { getAdDataFromId, getAdVisitsFromId } = require("./callToML");
+const {readSellsOnAd} = require('./acqDataOnPages')
 
 exports.updateSellsOnAllUsers = () => {
   data = {
@@ -57,11 +58,16 @@ exports.updateSellsOnAllUsers = () => {
           //   adsVisits = adsVisits.concat(await getAdVisitsFromId(idList));
           // });
 
-          adsBasicInfo.forEach(async (mlAdInfo) => {
+          // adsBasicInfo.forEach(async (mlAdInfo) => {
+          for (let mlAdInfo of adsBasicInfo){
             status = mlAdInfo.status;
             listingType = mlAdInfo.listingType;
-            currentTotalSells = mlAdInfo.sold_quantity;
             currentTotalVisits = adsVisits[mlAdInfo.id];
+
+            // console.log(mlAdInfo.title, currentTotalVisits)
+
+            // currentTotalSells = mlAdInfo.sold_quantity;
+            currentTotalSells = await readSellsOnAd(mlAdInfo.permalink);
 
             ad = ads.filter((ad) => {
               return ad.mlId === mlAdInfo.id;
@@ -116,7 +122,7 @@ exports.updateSellsOnAllUsers = () => {
                 console.log("fail");
                 console.log(err.message);
               });
-          });
+          }
         })
         .catch((err) => {
           console.log("erro no get de todos os ads");

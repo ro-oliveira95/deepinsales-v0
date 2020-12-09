@@ -14,8 +14,6 @@ exports.readSellsOnAd = async (url) => {
       startIndex = data.indexOf("|", startIndex);
       const endIndex = data.indexOf("vendido", startIndex);
 
-      console.log(data.substring(startIndex + 1, endIndex));
-
       val = Number(data.substring(startIndex + 1, endIndex));
 
       // return val;
