@@ -82,3 +82,19 @@ async function getMlAdIDFromSearch(query, permalink) {
     });
   return adID;
 }
+
+exports.getSellerNicknameFromSellerId = async (sellerId) => {
+  let sellerNickname;
+  // console.log(`query: ${query}`);
+  await axios
+    .get(`https://api.mercadolibre.com/users/${sellerId}`)
+    .then((res) => {
+      results = res.data.results;
+      sellerNickname = results.nickname;
+    })
+    .catch((err) => {
+      console.log("erro na procura no ML");
+      console.log(err.message);
+    });
+  return sellerNickname;
+}

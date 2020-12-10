@@ -5,6 +5,7 @@ const {
   getAdDataFromId,
   getMlAdIDFromURL,
   getAdVisitsFromId,
+  getSellerNicknameFromSellerId
 } = require("../utils/callToML");
 
 const AdSchema = new mongoose.Schema({
@@ -34,6 +35,7 @@ const AdSchema = new mongoose.Schema({
   rgb: [Number, Number, Number],
   category: String,
   seller: String,
+  price: Number,
   createdAt: {
     type: Date,
     default: Date.now,
@@ -48,9 +50,12 @@ const AdSchema = new mongoose.Schema({
 // Adding a Mongoose Middleware to create the slug before saving to DB
 AdSchema.pre("save", async function (next) {
   this.mlId = await getMlAdIDFromURL(this.url);
-
+  
   adInfo = await getAdDataFromId(this.mlId);
   adVisits = await getAdVisitsFromId(this.mlId);
+  
+  this.seller = await getSellerNicknameFromSellerId(adInfo[0].seller_id);
+  this.price = adInfo.price;
 
   if (this.name === "") {
     this.name = adInfo[0].title;

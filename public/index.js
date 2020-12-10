@@ -77,6 +77,15 @@ function createChart() {
   });
 }
 
+function updateCardsColor(rgbList) {
+  document.querySelectorAll(".card__face").forEach((card) => {
+    if (card.classList.contains("card__face--front")){
+      cardAdName = card.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.innerHTML;
+      card.style.backgroundColor = rgbList[cardAdName]
+    }
+  });
+}
+
 function createEventListeners() {
   document.querySelectorAll(".btn-flip").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -201,6 +210,7 @@ function loadAds() {
     .then((res) => {
       const ads = res.data.data;
       let data = [];
+      let rgbList = {};
       ads.forEach((ad) => {
         totalSells = ad.acumulatedSells[ad.acumulatedSells.length - 1].sells;
         totalVisits =
@@ -317,7 +327,10 @@ function loadAds() {
         // data.push(seriesDailySells);
         plotData[`${ad.name} - diário`] = seriesDailySells;
         plotData[`${ad.name} - acumulado`] = seriesAcumulatedSells;
+
+        rgbList[ad.name] = `rgb(${ad.rgb[0]}, ${ad.rgb[1]}, ${ad.rgb[2]}`
       });
+      updateCardsColor(rgbList);
       createEventListeners();
       updateChart(data);
     })
