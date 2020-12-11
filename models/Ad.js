@@ -5,7 +5,7 @@ const {
   getAdDataFromId,
   getMlAdIDFromURL,
   getAdVisitsFromId,
-  getSellerNicknameFromSellerId
+  getSellerNicknameFromSellerId,
 } = require("../utils/callToML");
 
 const AdSchema = new mongoose.Schema({
@@ -50,10 +50,10 @@ const AdSchema = new mongoose.Schema({
 // Adding a Mongoose Middleware to create the slug before saving to DB
 AdSchema.pre("save", async function (next) {
   this.mlId = await getMlAdIDFromURL(this.url);
-  
+
   adInfo = await getAdDataFromId(this.mlId);
   adVisits = await getAdVisitsFromId(this.mlId);
-  
+
   this.seller = await getSellerNicknameFromSellerId(adInfo[0].seller_id);
   this.price = adInfo.price;
 
@@ -67,7 +67,6 @@ AdSchema.pre("save", async function (next) {
   this.dailyVisits = [{ timestamp: this.createdAt, visits: 0 }];
   this.dailySells = [{ timestamp: this.createdAt, sells: 0 }];
 
-  // this.totalSells = adInfo[0].sold_quantity;
   this.totalSells = await readSellsOnAd(adInfo[0].permalink);
   this.totalVisits = adVisits[this.mlId];
 

@@ -6,23 +6,19 @@ exports.readSellsOnAd = async (url) => {
     .get(url)
     .then((res) => {
       let data = res.data;
-      //const index = data.search("ui-pdp-subtitle");
-      //val = data.substring(index + 26, index + 31);
 
       let startIndex = data.indexOf('<span class="ui-pdp-subtitle">');
       startIndex = data.indexOf("|", startIndex);
       const endIndex = data.indexOf("vendido", startIndex);
 
       val = Number(data.substring(startIndex + 1, endIndex));
-
-      // return val;
     })
     .catch((err) => {
       console.log(`erro ao extrair vendas em anuncio com URL ${url}`);
     });
 
-  if (val == null){
-    vall = 0;
+  if (val == null || Number.isNaN(val)) {
+    val = 0;
   }
   return val;
 };
@@ -43,6 +39,5 @@ exports.getImageURL = async (url) => {
     .catch((err) => {
       console.log(`erro ao extrair url da imagem em anuncio com URL ${url}`);
     });
-  // console.log("getImageCall");
   return imageURL;
 };

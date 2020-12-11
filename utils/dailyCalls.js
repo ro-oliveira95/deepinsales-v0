@@ -1,5 +1,9 @@
 const axios = require("axios");
-const { getAdDataFromId, getAdVisitsFromId, getSellerNicknameFromSellerId } = require("./callToML");
+const {
+  getAdDataFromId,
+  getAdVisitsFromId,
+  getSellerNicknameFromSellerId,
+} = require("./callToML");
 const { readSellsOnAd } = require("./acqDataOnPages");
 
 exports.updateSellsOnAllUsers = () => {
@@ -36,14 +40,7 @@ exports.updateSellsOnAllUsers = () => {
             mlIdList.push(ad.mlId);
           });
 
-          // console.log(mlIdList);
-
-          // adsBasicInfo = await getAdDataFromId(mlIdList);
           adsVisits = await getAdVisitsFromId(mlIdList);
-
-          // console.log(adsVisits);
-
-          // console.log(adsBasicInfo);
 
           mlIdList = [];
 
@@ -58,22 +55,17 @@ exports.updateSellsOnAllUsers = () => {
           });
 
           adsBasicInfo = [];
-          // adsVisits = [];
 
           for (let idList of mlIdList) {
             info = await getAdDataFromId(idList);
             adsBasicInfo = adsBasicInfo.concat(info);
           }
 
-          // adsBasicInfo.forEach(async (mlAdInfo) => {
           for (let mlAdInfo of adsBasicInfo) {
-            // status = mlAdInfo.status;
-            // listingType = mlAdInfo.listingType;
+            status = mlAdInfo.status;
+            listingType = mlAdInfo.listingType;
             currentTotalVisits = adsVisits[mlAdInfo.id];
 
-            // console.log(mlAdInfo.title, currentTotalVisits)
-
-            // currentTotalSells = mlAdInfo.sold_quantity;
             currentTotalSells = await readSellsOnAd(mlAdInfo.permalink);
             seller = await getSellerNicknameFromSellerId(mlAdInfo.seller_id);
 
@@ -84,56 +76,58 @@ exports.updateSellsOnAllUsers = () => {
             ad = ad[0];
 
             id = ad._id;
-            // pastTotalSells = ad.totalSells;
-            // pastTotalVisits = ad.totalVisits;
+            pastTotalSells = ad.totalSells;
+            pastTotalVisits = ad.totalVisits;
 
-            // lastSellRecord =
-            //   ad.acumulatedSells[ad.acumulatedSells.length - 1].sells;
-            // lastVisitRecord =
-            //   ad.acumulatedVisits[ad.acumulatedVisits.length - 1].visits;
+            lastSellRecord =
+              ad.acumulatedSells[ad.acumulatedSells.length - 1].sells;
+            lastVisitRecord =
+              ad.acumulatedVisits[ad.acumulatedVisits.length - 1].visits;
 
-            // dailySell = currentTotalSells - pastTotalSells;
-            // dailyVisit = currentTotalVisits - pastTotalVisits;
+            dailySell = currentTotalSells - pastTotalSells;
+            dailyVisit = currentTotalVisits - pastTotalVisits;
 
-            // acumulatedSell = lastSellRecord + dailySell;
-            // acumulatedVisit = lastVisitRecord + dailyVisit;
+            acumulatedSell = lastSellRecord + dailySell;
+            acumulatedVisit = lastVisitRecord + dailyVisit;
 
             price = mlAdInfo.price;
-            createdAt = Date.now();
 
             updatedData = {
-              acumulatedSells: [{ timestamp: createdAt, sells: 0 }],
-              acumulatedVisits: [{ timestamp: createdAt, visits: 0 }],
-              dailySells: [{ timestamp: createdAt, sells: 0 }],
-              dailyVisits: [{ timestamp: createdAt, visits: 0 }],
+              acumulatedSells: [
+                ...ad.acumulatedSells,
+                { timestamp: Date.now(), sells: acumulatedSell },
+              ],
+              acumulatedVisits: [
+                ...ad.acumulatedVisits,
+                { timestamp: Date.now(), visits: acumulatedVisit },
+              ],
+              dailySells: [
+                ...ad.dailySells,
+                { timestamp: Date.now(), sells: dailySell },
+              ],
+              dailyVisits: [
+                ...ad.dailyVisits,
+                { timestamp: Date.now(), visits: dailyVisit },
+              ],
               totalSells: currentTotalSells,
               totalVisits: currentTotalVisits,
-              createdAt: createdAt,
+              status: status,
+              listingType: listingType,
               price: price,
-              seller: seller,
             };
 
+            // time = Date.now();
+
             // updatedData = {
-            //   acumulatedSells: [
-            //     ...ad.acumulatedSells,
-            //     { timestamp: Date.now(), sells: acumulatedSell },
-            //   ],
-            //   acumulatedVisits: [
-            //     ...ad.acumulatedVisits,
-            //     { timestamp: Date.now(), visits: acumulatedVisit },
-            //   ],
-            //   dailySells: [
-            //     ...ad.dailySells,
-            //     { timestamp: Date.now(), sells: dailySell },
-            //   ],
-            //   dailyVisits: [
-            //     ...ad.dailyVisits,
-            //     { timestamp: Date.now(), visits: dailyVisit },
-            //   ],
+            //   acumulatedSells: [{ timestamp: time, sells: 0 }],
+            //   acumulatedVisits: [{ timestamp: time, visits: 0 }],
+            //   dailySells: [{ timestamp: time, sells: 0 }],
+            //   dailyVisits: [{ timestamp: time, visits: 0 }],
             //   totalSells: currentTotalSells,
             //   totalVisits: currentTotalVisits,
-            //   status: status,
-            //   listingType: listingType,
+            //   createdAt: time,
+            //   price: price,
+            //   seller: seller,
             // };
 
             await axios

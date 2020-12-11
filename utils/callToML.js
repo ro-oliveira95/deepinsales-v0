@@ -1,9 +1,6 @@
 const axios = require("axios");
 
 exports.getAdDataFromId = async (mlIdList) => {
-  // adList = String(mlIdList);
-  // console.log(adList);
-
   const url = `https://api.mercadolibre.com/items?ids=${String(mlIdList)}`;
 
   let adData;
@@ -23,10 +20,6 @@ exports.getAdDataFromId = async (mlIdList) => {
 };
 
 exports.getAdVisitsFromId = async (mlIdList) => {
-  console.log(
-    `https://api.mercadolibre.com/visits/items?ids=${String(mlIdList)}`
-  );
-
   const url = `https://api.mercadolibre.com/visits/items?ids=${String(
     mlIdList
   )}`;
