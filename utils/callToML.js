@@ -23,6 +23,10 @@ exports.getAdDataFromId = async (mlIdList) => {
 };
 
 exports.getAdVisitsFromId = async (mlIdList) => {
+  console.log(
+    `https://api.mercadolibre.com/visits/items?ids=${String(mlIdList)}`
+  );
+
   const url = `https://api.mercadolibre.com/visits/items?ids=${String(
     mlIdList
   )}`;
@@ -35,7 +39,7 @@ exports.getAdVisitsFromId = async (mlIdList) => {
       adData = res.data;
     })
     .catch((err) => {
-      console.log(err.message);
+      console.log(err);
     });
   return adData;
 };
@@ -97,4 +101,4 @@ exports.getSellerNicknameFromSellerId = async (sellerId) => {
       console.log(err.message);
     });
   return sellerNickname;
-}
+};

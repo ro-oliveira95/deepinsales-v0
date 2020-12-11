@@ -36,6 +36,9 @@ function createChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      legend: {
+        display: false,
+      },
       scales: {
         yAxes: [
           {
@@ -79,9 +82,11 @@ function createChart() {
 
 function updateCardsColor(rgbList) {
   document.querySelectorAll(".card__face").forEach((card) => {
-    if (card.classList.contains("card__face--front")){
-      cardAdName = card.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.innerHTML;
-      card.style.backgroundColor = rgbList[cardAdName]
+    if (card.classList.contains("card__face--front")) {
+      cardAdName =
+        card.firstElementChild.nextElementSibling.firstElementChild
+          .firstElementChild.nextElementSibling.innerHTML;
+      card.style.backgroundColor = rgbList[cardAdName];
     }
   });
 }
@@ -328,7 +333,7 @@ function loadAds() {
         plotData[`${ad.name} - diário`] = seriesDailySells;
         plotData[`${ad.name} - acumulado`] = seriesAcumulatedSells;
 
-        rgbList[ad.name] = `rgb(${ad.rgb[0]}, ${ad.rgb[1]}, ${ad.rgb[2]}`
+        rgbList[ad.name] = `rgb(${ad.rgb[0]}, ${ad.rgb[1]}, ${ad.rgb[2]}`;
       });
       updateCardsColor(rgbList);
       createEventListeners();

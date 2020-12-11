@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { getAdDataFromId, getAdVisitsFromId } = require("./callToML");
-const {readSellsOnAd} = require('./acqDataOnPages')
+const { readSellsOnAd } = require("./acqDataOnPages");
 
 exports.updateSellsOnAllUsers = () => {
   data = {
@@ -36,33 +36,41 @@ exports.updateSellsOnAllUsers = () => {
             mlIdList.push(ad.mlId);
           });
 
-          adsBasicInfo = await getAdDataFromId(mlIdList);
-          adsVisits = await getAdVisitsFromId(mlIdList);
+          console.log(mlIdList);
 
-          // ads.forEach((ad, index) => {
-          //   console.log(index);
-          //   outerIndex = Math.floor(index / 10);
+          // adsBasicInfo = await getAdDataFromId(mlIdList);
+          // adsVisits = await getAdVisitsFromId(mlIdList);
 
-          //   if (mlIdList[outerIndex] == null) {
-          //     mlIdList[outerIndex] = [];
-          //   }
+          // console.log(adsVisits);
 
-          //   mlIdList[outerIndex].push(ad.mlId);
-          // });
+          // console.log(adsBasicInfo);
 
-          // adsBasicInfo = [];
+          mlIdList = [];
+
+          ads.forEach((ad, index) => {
+            outerIndex = Math.floor(index / 20);
+
+            if (mlIdList[outerIndex] == null) {
+              mlIdList[outerIndex] = [];
+            }
+
+            mlIdList[outerIndex].push(ad.mlId);
+          });
+
+          adsBasicInfo = [];
           // adsVisits = [];
 
-          // mlIdList.forEach(async (idList) => {
-          //   adsBasicInfo = adsBasicInfo.concat(await getAdDataFromId(idList));
-          //   adsVisits = adsVisits.concat(await getAdVisitsFromId(idList));
-          // });
+          for (let idList of mlIdList) {
+            info = await getAdDataFromId(idList);
+            adsBasicInfo = adsBasicInfo.concat(info);
+          }
 
           // adsBasicInfo.forEach(async (mlAdInfo) => {
-          for (let mlAdInfo of adsBasicInfo){
+          for (let mlAdInfo of adsBasicInfo) {
             status = mlAdInfo.status;
             listingType = mlAdInfo.listingType;
-            currentTotalVisits = adsVisits[mlAdInfo.id];
+            // currentTotalVisits = adsVisits[mlAdInfo.id];
+            currentTotalVisits = 0;
 
             // console.log(mlAdInfo.title, currentTotalVisits)
 
@@ -90,28 +98,42 @@ exports.updateSellsOnAllUsers = () => {
             acumulatedSell = lastSellRecord + dailySell;
             acumulatedVisit = lastVisitRecord + dailyVisit;
 
+            price = mlAdInfo.price;
+            createdAt = Date.now();
+
             updatedData = {
-              acumulatedSells: [
-                ...ad.acumulatedSells,
-                { timestamp: Date.now(), sells: acumulatedSell },
-              ],
-              acumulatedVisits: [
-                ...ad.acumulatedVisits,
-                { timestamp: Date.now(), visits: acumulatedVisit },
-              ],
-              dailySells: [
-                ...ad.dailySells,
-                { timestamp: Date.now(), sells: dailySell },
-              ],
-              dailyVisits: [
-                ...ad.dailyVisits,
-                { timestamp: Date.now(), visits: dailyVisit },
-              ],
+              acumulatedSells: [],
+              acumulatedVisits: [],
+              dailySells: [],
+              dailyVisits: [],
               totalSells: currentTotalSells,
               totalVisits: currentTotalVisits,
-              status: status,
-              listingType: listingType,
+              createdAt: createdAt,
+              price: price,
             };
+
+            // updatedData = {
+            //   acumulatedSells: [
+            //     ...ad.acumulatedSells,
+            //     { timestamp: Date.now(), sells: acumulatedSell },
+            //   ],
+            //   acumulatedVisits: [
+            //     ...ad.acumulatedVisits,
+            //     { timestamp: Date.now(), visits: acumulatedVisit },
+            //   ],
+            //   dailySells: [
+            //     ...ad.dailySells,
+            //     { timestamp: Date.now(), sells: dailySell },
+            //   ],
+            //   dailyVisits: [
+            //     ...ad.dailyVisits,
+            //     { timestamp: Date.now(), visits: dailyVisit },
+            //   ],
+            //   totalSells: currentTotalSells,
+            //   totalVisits: currentTotalVisits,
+            //   status: status,
+            //   listingType: listingType,
+            // };
 
             await axios
               .put(`/api/v1/ads/${id}`, updatedData, options)
@@ -126,7 +148,7 @@ exports.updateSellsOnAllUsers = () => {
         })
         .catch((err) => {
           console.log("erro no get de todos os ads");
-          console.log(err.message);
+          console.log(err);
         });
     })
     .catch((err) => {
