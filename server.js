@@ -61,11 +61,13 @@ app.use("/index", index);
 app.use(errorHandler);
 
 // scheduling daily calls
-cron.schedule("*/40 * * * * *", () => {
-  d = new Date();
-  console.log(`[${d.toGMTString()}] calling dailly functions...`);
-  updateSellsOnAllUsers();
-});
+// cron.schedule("*/59 * * * * *", () => {
+//   d = new Date();
+//   console.log(`[${d.toGMTString()}] calling dailly functions...`);
+//   updateSellsOnAllUsers();
+// });
+
+updateSellsOnAllUsers();
 
 // handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {

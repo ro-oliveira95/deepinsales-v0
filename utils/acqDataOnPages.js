@@ -1,8 +1,7 @@
 const axios = require("axios");
 
 exports.readSellsOnAd = async (url) => {
-  let val = -1;
-
+  let val;
   await axios
     .get(url)
     .then((res) => {
@@ -21,6 +20,10 @@ exports.readSellsOnAd = async (url) => {
     .catch((err) => {
       console.log(`erro ao extrair vendas em anuncio com URL ${url}`);
     });
+
+  if (val == null){
+    vall = 0;
+  }
   return val;
 };
 

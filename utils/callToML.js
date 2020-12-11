@@ -93,7 +93,7 @@ exports.getSellerNicknameFromSellerId = async (sellerId) => {
   await axios
     .get(`https://api.mercadolibre.com/users/${sellerId}`)
     .then((res) => {
-      results = res.data.results;
+      results = res.data;
       sellerNickname = results.nickname;
     })
     .catch((err) => {
