@@ -64,7 +64,7 @@ app.use(errorHandler);
 cron.schedule("*/30 * * * *", () => {
   d = new Date();
   console.log(`[${d.toGMTString()}] calling dailly functions...`);
-  updateSellsOnAllUsers();
+  // updateSellsOnAllUsers();
 });
 
 // handle unhandled promise rejections

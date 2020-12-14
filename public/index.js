@@ -81,23 +81,24 @@ function createChart() {
 }
 
 function updateCardsColor(rgbList) {
-  document.querySelectorAll(".card__face").forEach((card) => {
-    if (card.classList.contains("card__face--front")) {
-      cardAdName =
-        card.firstElementChild.nextElementSibling.firstElementChild
-          .firstElementChild.nextElementSibling.innerHTML;
-      card.style.backgroundColor = rgbList[cardAdName];
-    }
+  document.querySelectorAll(".card-header").forEach((header) => {
+    cardAdName = header.firstElementChild.innerHTML;
+    console.log(cardAdName);
+    header.style.backgroundColor = rgbList[cardAdName];
   });
 }
 
 function createEventListeners() {
-  document.querySelectorAll(".btn-flip").forEach((btn) => {
+  document.querySelectorAll(".fa-angle-double-right").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      // console.log("test");
-
+      // if (!e.target.classList.contains("btn-flip")) {
+      //   return;
+      // }
+      // console.log(e.target);
       // if (e.target.parentElement.classList.contains("card")) {
-      e.target.parentElement.parentElement.classList.toggle("is-flipped");
+      e.target.parentElement.parentElement.nextElementSibling.classList.toggle(
+        "is-flipped"
+      );
       // }
       // document.querySelector(".card").classList.toggle("is-flipped");
     });
@@ -108,9 +109,8 @@ function createEventListeners() {
       e.preventDefault();
       if (e.target.classList.contains("btn-delete")) {
         const itemName =
-          e.target.parentElement.parentElement.parentElement.parentElement
-            .firstElementChild.firstElementChild.nextElementSibling
-            .firstElementChild.firstElementChild.nextElementSibling.innerHTML;
+          e.target.parentElement.parentElement.parentElement
+            .previousElementSibling.firstElementChild.innerHTML;
 
         axios
           .get(`/api/v1/ads?name=${itemName}`)
@@ -171,9 +171,9 @@ function createEventListeners() {
     });
   });
 
-  document.querySelectorAll(".switch").forEach((input) => {
+  document.querySelectorAll(".switch-container").forEach((input) => {
     input.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("slider")) {
+      if (!e.target.classList.contains("switch-container-slider")) {
         return;
       }
 
@@ -187,9 +187,8 @@ function createEventListeners() {
 
       adName =
         e.target.parentElement.parentElement.parentElement.parentElement
-          .parentElement.parentElement.firstElementChild.firstElementChild
-          .nextElementSibling.firstElementChild.firstElementChild
-          .nextElementSibling.innerHTML;
+          .parentElement.parentElement.parentElement.previousElementSibling
+          .firstElementChild.innerHTML;
 
       label = adName + " - " + type;
 
@@ -227,75 +226,81 @@ function loadAds() {
           conversionRate = 0;
         }
 
-        adsListHTML += `<div class="scene">
-          <div class="card">
-            <div class="card__face card__face--front">
+        name = ad.name;
+
+        if (ad.name.length >= 35) {
+          name = ad.name.substring(0, 35) + "+";
+        }
+
+        adsListHTML += `<div class="card">
+          <div class="card-header">
+            <p class="invisible">${ad.name}</p>
+            <p>${name}</p>
+            <div class="btn-flip">
+              <i class="fas fa-angle-double-right"></i>            
+            </div>
+          </div>
+          <div class="card-main">
+            <div class="card-main-face card-main-face-front">
               <img src="${ad.imageUrl}" alt="Indisponível">
-              <div class="card-content">
-                <div class="card-content-header-container">
-                  <a href="${ad.url}" target="_blank" class="redirect-link">
-                    <i class="fas fa-external-link-alt"></i>
-                  </a>
-                  <h3>${ad.name}</h3>
+              <div class="card-main-face-front-content">
+                <div class="card-main-face-front-content-section section1">
+                  <div>
+                    <i class="fas fa-dollar-sign"></i>
+                    <p>${ad.price}</p>
+                  </div>
+                  <p>${ad.seller}</p>
                 </div>
-                <div class="card-content-info-container">
-                  <div class="card-front-item">
-                    <i class="fas fa-eye card-front-item-icon"></i>
+                <div class="card-main-face-front-content-section section2">
+                  <i class="fas fa-chart-line"></i>
+                  <div>
+                    <div class="switch">
+                      <label class="switch-container">
+                        <input type="checkbox" checked="true">
+                        <span class="switch-container-slider round"></span>
+                      </label>
+                      <p>Acumulado</p>
+                    </div>
+                    <div class="switch">
+                      <label class="switch-container">
+                        <input type="checkbox">
+                        <span class="switch-container-slider round"></span>
+                      </label>
+                      <p>Diário</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-main-face-front-content-section section3">
+                  <div>
+                    <i class="fas fa-eye"></i>
                     <p>${totalVisits}</p>
                   </div>
-                  <div class="card-front-item">
-                    <i class="fas fa-shopping-cart card-front-item-icon"></i>
+                  <div>
+                    <i class="fas fa-shopping-cart"></i>
                     <p>${totalSells}</p>
                   </div>
-                  <div class="card-front-item">
-                    <i class="fas fa-sync-alt card-front-item-icon"></i>
+                  <div>
+                    <i class="fas fa-sync-alt"></i>
                     <p>${conversionRate}%</p>
                   </div>
                 </div>
-              
               </div>
-              <div class="btn-flip"></div>
             </div>
-            <div class="card__face card__face--back">
-              <div class="card-back-menu">
-                <a class="btn-card-menu btn-icon-activate">
-                  <i class="fas fa-chart-line menu-icon"></i>
-                  Gráfico                  
-                </a>
-                <a class="btn-card-menu">
-                  <i class="fas fa-cogs menu-icon"></i>
-                  Ajustes
-                </a>
-              </div>
-              <div class="horizontal-divider"></div>
-              <div class="card-back-content">
-                <div class="content-1">
-                  <div class="switch-container">
-                    <label class="switch">
-                      <input type="checkbox" checked="true" class="switch">
-                      <span class="slider round"></span>
-                    </label>
-                    <p>Acumulado</p>
-                    </div>
-                  <div class="switch-container">
-                    <label class="switch">
-                      <input type="checkbox" class="switch">
-                      <span class="slider round"></span>
-                    </label>
-                    <p>Diário</p>
-                    </div>  
+            <div class="card-main-face card-main-face-back">
+              <div class="card-main-face-back-content">
+                <div>
+                  <p><span>Criado em</span> ${moment(ad.createdAt).format(
+                    "DD/MM/YY hh:mm"
+                  )}</p>
+                  <p><span>Tipo de listagem</span> ${ad.listingType}</p>
                 </div>
-                <div class="content-2">
-                  <button class="btn btn-delete">
-                    <i class="fas fa-trash delete-icon"></i>
-                    Deletar
-                  </button>
-                </div>
+                <button class="btn btn-delete">
+                  <i class="fas fa-trash delete-icon"></i>
+                  Deletar
+                </button>
               </div>
-              <div class="btn-flip btn-flip-2"></div>
             </div>
           </div>
-          
         </div>`;
 
         adDisplay.innerHTML = adsListHTML;

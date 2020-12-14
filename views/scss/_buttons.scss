@@ -1,0 +1,147 @@
+.btn {
+  outline: none !important;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn-details {
+  font-size: 0.9rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.btn-container {
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.btn-delete {
+  color: rgb(247, 245, 245);
+  background-color: rgb(233, 62, 62);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  width: 100px;
+}
+
+.btn-delete i {
+  /*font-size: 25px;*/
+  padding: 0.2rem;
+}
+
+.btn-download {
+  color: blue;
+}
+
+.btn-flip {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+
+  i {
+    transition: opacity 0.5s;
+    text-shadow: white 0px 0px 8px;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
+.btn-add-ad {
+  padding: 0.3rem 0.8rem;
+  background-color: rgb(112, 214, 180);
+  border: solid 1px rgb(19, 66, 60);
+  font-size: 0.9rem;
+}
+
+.btn-menu {
+  font-size: 0.8rem;
+  color: #ccc;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 1rem;
+  width: 100%;
+  background-color: rgb(52, 145, 132);
+}
+
+.btn-logout {
+  background-color: rgb(201, 100, 97);
+  color: rgb(51, 51, 51);
+}
+
+.btn-menu:hover {
+  background-color: rgb(127, 180, 173);
+  color: rgb(19, 66, 60);
+}
+
+.btn-logout:hover {
+  background-color: rgb(155, 70, 67) !important;
+}
+
+.switch {
+  display: flex;
+  gap: 0.3rem;
+
+  &-container {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 0.9rem;
+
+    & input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + .switch-container-slider {
+        background-color: rgb(134, 133, 133);
+      }
+
+      &:focus + .switch-container-slider {
+        box-shadow: 0 0 1px rgb(134, 133, 133);
+      }
+
+      &:checked + .switch-container-slider:before {
+        -webkit-transform: translateX(10px);
+        -ms-transform: translateX(10px);
+        transform: translateX(10px);
+      }
+    }
+
+    &-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+
+      &:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 10px;
+        left: 2px;
+        bottom: 2px;
+        background-color: rgb(37, 37, 37);
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      &.round {
+        border-radius: 0.9rem;
+      }
+      &.round:before {
+        border-radius: 50%;
+      }
+    }
+  }
+}
