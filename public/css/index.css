@@ -21,6 +21,42 @@
   text-align: center;
 }
 
+.card-header a {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  color: inherit;
+}
+
+.card-header a i {
+  transition: opacity 0.5s;
+  text-shadow: white 0px 0px 8px;
+}
+
+.card-header a i:hover {
+  opacity: 0.5;
+}
+
+.card-header .btn-flip {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor: pointer;
+}
+
+.card-header .btn-flip i {
+  transition: all 0.5s;
+  text-shadow: white 0px 0px 8px;
+}
+
+.card-header .btn-flip i:hover {
+  opacity: 0.5;
+}
+
+.card-header .btn-flip i:active {
+  transform: scale(0.5);
+}
+
 .card-main {
   width: 100%;
   height: 133px;
@@ -189,21 +225,6 @@
   color: blue;
 }
 
-.btn-flip {
-  position: absolute;
-  right: 10px;
-  top: 8px;
-}
-
-.btn-flip i {
-  transition: opacity 0.5s;
-  text-shadow: white 0px 0px 8px;
-}
-
-.btn-flip i:hover {
-  opacity: 0.5;
-}
-
 .btn-add-ad {
   padding: 0.3rem 0.8rem;
   background-color: #70d6b4;
@@ -324,7 +345,7 @@ h2 {
   /* overflow: auto; */
   display: grid;
   grid-template-areas: "ad-list add-ad" "ad-list chart-section";
-  grid-template-columns: 650px minmax(500px, 1fr);
+  grid-template-columns: 700px minmax(500px, 1fr);
   grid-template-rows: 210px 1fr;
   gap: 1rem;
   padding: 2rem;

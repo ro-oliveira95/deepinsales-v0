@@ -37,21 +37,6 @@
   color: blue;
 }
 
-.btn-flip {
-  position: absolute;
-  right: 10px;
-  top: 8px;
-
-  i {
-    transition: opacity 0.5s;
-    text-shadow: white 0px 0px 8px;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-}
-
 .btn-add-ad {
   padding: 0.3rem 0.8rem;
   background-color: rgb(112, 214, 180);

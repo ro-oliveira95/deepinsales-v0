@@ -67,12 +67,12 @@ function createChart() {
         xAxes: [
           {
             type: "time",
-            /*time: {
+            time: {
               unit: "day",
               displayFormats: {
-                day: "DD/MM h a",
+                day: "DD/MM hha",
               },
-            },*/
+            },
           },
         ],
       },
@@ -235,6 +235,9 @@ function loadAds() {
         adsListHTML += `<div class="card">
           <div class="card-header">
             <p class="invisible">${ad.name}</p>
+            <a href="${ad.url}" target=_blank>
+              <i class="fas fa-external-link-alt"></i>
+            </a>
             <p>${name}</p>
             <div class="btn-flip">
               <i class="fas fa-angle-double-right"></i>            
