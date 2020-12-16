@@ -55,7 +55,7 @@ AdSchema.pre("save", async function (next) {
   adVisits = await getAdVisitsFromId(this.mlId);
 
   this.seller = await getSellerNicknameFromSellerId(adInfo[0].seller_id);
-  this.price = adInfo.price;
+  this.price = adInfo[0].price;
 
   if (this.name === "") {
     this.name = adInfo[0].title;
