@@ -83,7 +83,6 @@ function createChart() {
 function updateCardsColor(rgbList) {
   document.querySelectorAll(".card-header").forEach((header) => {
     cardAdName = header.firstElementChild.innerHTML;
-    console.log(cardAdName);
     header.style.backgroundColor = rgbList[cardAdName];
   });
 }
@@ -122,7 +121,7 @@ function createEventListeners() {
             axios
               .delete(`/api/v1/ads/${params.itemID}`, options)
               .then((res) => {
-                console.log("sucess");
+                // console.log("sucess");
                 loadAds();
               })
               .catch((err) => console.log(err.message));
@@ -192,7 +191,7 @@ function createEventListeners() {
 
       label = adName + " - " + type;
 
-      console.log(e.target.previousElementSibling.checked);
+      // console.log(e.target.previousElementSibling.checked);
 
       if (e.target.previousElementSibling.checked) {
         // desabling
