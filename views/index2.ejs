@@ -19,6 +19,14 @@
     <div class="container add-ad">
       <!-- <div class="subsection subsection-addAd"> -->
         <h2 class="sec-title">Adicionar produtos</h2>
+        <% console.log('ERROR no EJS:', typeof locals.error)%>
+        <h1><%=locals.error%></h1>
+        <% if(locals.error) { %>
+          <p>ERRO!</p>
+          <div class="alert">
+            <p><%=locals.error%></p>
+          </div>
+        <% } %>
         <form class="add-ad">
           <div class="form-field">
             <label for="name">Nome do produto</label>

@@ -114,6 +114,15 @@ input:focus {
   box-shadow: 0 0 10px #719ece;
 }
 
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  border: 1px solid yellow;
+  background-color: rgba(240, 237, 66, 0.377);
+}
+
 .faded-background {
   display: none;
   position: fixed;
@@ -128,15 +137,16 @@ input:focus {
 }
 
 .popWindow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: #ccc;
   animation: openDialog 0.5s forwards;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   z-index: 3;
-  padding: 2rem;
-  margin-bottom: 1rem;
+  padding: 1rem 2rem;
   border: 2px solid rgb(112, 214, 180);
   border-radius: 1rem;
-  overflow: hidden;
 }
 
 .window-content {
@@ -150,6 +160,6 @@ input:focus {
   }
   to {
     width: 40%;
-    height: 330px;
+    height: 350px;
   }
 }

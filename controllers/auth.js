@@ -33,14 +33,20 @@ exports.login = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    return next(new ErrorResponse("Invalid credentials", 401));
+    // return next(new ErrorResponse("Invalid credentials", 401));
+
+    req.session.errorLogin = "Credenciais inválidas.";
+    return res.redirect("/login");
   }
 
   // check if password matches
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
-    return next(new ErrorResponse("Invalid credentials", 401));
+    // return next(new ErrorResponse("Invalid credentials", 401));
+
+    req.session.errorLogin = "Credenciais inválidas.";
+    return res.redirect("/login");
   }
 
   sendTokenResponse(user, 200, res);
@@ -77,9 +83,10 @@ const sendTokenResponse = (user, statusCode, res) => {
   }
 
   res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({ success: true, token });
+    // .status(statusCode)
+    .cookie("token", `Bearer ${token}`, options)
+    // .json({ success: true, token });
+    .redirect("/");
 };
 
 // @desc     Get current logged in user

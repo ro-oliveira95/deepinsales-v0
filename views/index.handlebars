@@ -1,0 +1,59 @@
+<div class="screen">
+  <div class="menu">
+    <img src="./img/logo-modified.png" alt="logo">
+    <hr>
+    <h3>{{ user }}</h3>
+    <hr>
+    <a href="/" class="btn-menu">
+      <img src="./img/monitoring-icon.svg" alt="" class="menu-icon">
+      Monitoramento
+    </a>
+    <a href="/logout" class="btn-menu btn-logout">Logout</a>
+  </div>
+
+  <div class="main">
+    <div class="container add-ad">
+      <!-- <div class="subsection subsection-addAd"> -->
+      <h2 class="sec-title">Adicionar produtos</h2>
+      {{log '----'}}
+      {{ log error}}
+      {{log '----'}}
+      {{!-- <h1>{{ locals.error }}</h1> --}}
+      {{!-- {{ #if error }}
+      <p>ERRO!</p> --}}
+      {{!-- <div class="alert"> --}}
+        <p>{{error}}</p>
+        {{!--
+      </div> --}}
+      {{!-- {{/if}} --}}
+      <form class="add-ad">
+        <div class="form-field">
+          <label for="name">Nome do produto</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <div class="form-field">
+          <label for="url">URL do anúncio</label>
+          <input type="text" id="url" name="url">
+        </div>
+        <button class="btn btn-add-ad" type="submit">Adicionar</button>
+      </form>
+    </div>
+    <div class="container ad-list">
+      <div class="data-list"></div>
+    </div>
+    <div class="container chart-section">
+      <div id="chartContainer">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+    <div class="faded-background">
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="./index.js"></script>

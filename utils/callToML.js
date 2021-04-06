@@ -41,44 +41,76 @@ exports.getMlAdIDFromURL = async (adURL) => {
   url = new URL(adURL);
   details = url.pathname.substring(1);
   splitedDetails = details.split("-");
-  let adID;
+  let mlId;
 
-  // Primeiro caso: id do produto explícito
+  // Primeiro caso: id do produto explícito -> produto comum
   if (splitedDetails[0] === "MLB") {
-    adID = splitedDetails[0] + splitedDetails[1];
+    mlId = splitedDetails[0] + splitedDetails[1];
+    isBuybox = false;
+    catalogueId = "";
   } else {
-    // Segundo caso: id implícito
-    permalink = url.protocol + "//" + url.host + url.pathname;
-    adName = url.pathname.substring(1).split("/")[0];
-    queryName = adName.replace(/-/g, "+");
-
-    adID = await getMlAdIDFromSearch(queryName, permalink);
+    // Segundo caso: id implícito -> produto catalogado ('buybox')
+    index = details.indexOf("/p/");
+    catalogueId = details.substring(index + 3);
+    console.log("catalogueId", catalogueId);
+    mlId = await getMlAdIDFromCatalogue(catalogueId);
+    isBuybox = true;
   }
   // console.log(adID);
-  return adID;
+  return { mlId, catalogueId, isBuybox };
 };
 
-async function getMlAdIDFromSearch(query, permalink) {
+async function getMlAdIDFromCatalogue(productID) {
+  const url = `https://api.mercadolibre.com/products/${productID}`;
   let adID;
-  // console.log(`query: ${query}`);
+
   await axios
-    .get(`https://api.mercadolibre.com/sites/MLB/search?q=${query}`)
+    .get(url)
     .then((res) => {
-      results = res.data.results;
-      //console.log(results);
-      for (index in results) {
-        if (results[index].permalink === permalink) {
-          adID = results[index].id;
-          break;
-        }
-      }
+      adID = res.data.buy_box_winner.item_id;
     })
     .catch((err) => {
-      console.log("erro na procura no ML");
       console.log(err.message);
     });
   return adID;
 }
+
+exports.checkForAdUpdates = async (productID) => {
+  const url = `https://api.mercadolibre.com/products/${productID}`;
+  let adData;
+
+  await axios
+    .get(url)
+    .then((res) => {
+      adData = res.data;
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  return adData;
+};
+
+// async function getMlAdIDFromSearch(query, permalink) {
+//   let adID;
+//   // console.log(`query: ${query}`);
+//   await axios
+//     .get(`https://api.mercadolibre.com/sites/MLB/search?q=${query}`)
+//     .then((res) => {
+//       results = res.data.results;
+//       //console.log(results);
+//       for (index in results) {
+//         if (results[index].permalink === permalink) {
+//           adID = results[index].id;
+//           break;
+//         }
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("erro na procura no ML");
+//       console.log(err.message);
+//     });
+//   return adID;
+// }
 
 exports.getSellerNicknameFromSellerId = async (sellerId) => {
   let sellerNickname;

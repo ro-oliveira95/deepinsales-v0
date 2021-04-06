@@ -213,6 +213,15 @@ input:focus {
   display: none;
 }
 
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  border: 1px solid yellow;
+  background-color: rgba(240, 237, 66, 0.377);
+}
+
 @keyframes openDialog {
   from {
     width: 0;

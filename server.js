@@ -8,10 +8,14 @@ const fileupload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cron = require("node-cron");
+const cookieSession = require("cookie-parser");
+var session = require("express-session");
 
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 const { updateSellsOnAllUsers } = require("./utils/dailyCalls");
+
+var exphbs = require("express-handlebars");
 
 // load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -28,17 +32,27 @@ const index = require("./routes/index");
 // init app
 const app = express();
 
+app.engine("handlebars", exphbs());
+
+// setting the view engine
+app.set("view engine", "handlebars");
+
 // body parser - needed to pass JSON content on the body of the requisition
 app.use(express.json({ limit: "10mb" }));
 
 // cookie parser
 app.use(cookieParser());
 
+app.use(
+  session({
+    secret: "Shh, its a secret!",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
 // body parser to receive form data in req.body
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
-
-// setting the view engine
-app.set("view engine", "ejs");
 
 // dev logging middleware
 if (process.env.NODE_ENV === "development") {
@@ -64,8 +78,10 @@ app.use(errorHandler);
 cron.schedule("0 */6 * * *", () => {
   d = new Date();
   console.log(`[${d.toGMTString()}] calling dailly functions...`);
-  updateSellsOnAllUsers();
+  // updateSellsOnAllUsers();
 });
+
+//updateSellsOnAllUsers();
 
 // handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {

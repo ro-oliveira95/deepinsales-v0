@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-exports.readSellsOnAd = async (url) => {
+exports.readSellsOnAd = async (id, url) => {
   let val;
   await axios
     .get(url)
@@ -20,7 +20,7 @@ exports.readSellsOnAd = async (url) => {
   if (val == null || Number.isNaN(val)) {
     val = 0;
   }
-  return val;
+  return { id, val };
 };
 
 exports.getImageURL = async (url) => {

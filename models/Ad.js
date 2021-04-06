@@ -24,7 +24,6 @@ const AdSchema = new mongoose.Schema({
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
       "Please use a valid URL with HTTP or HTTPS",
     ],
-    unique: [true, "Please add a URL that isn't already stored"],
   },
   acumulatedSells: [{ timestamp: Date, sells: Number }],
   acumulatedVisits: [{ timestamp: Date, visits: Number }],
@@ -36,6 +35,8 @@ const AdSchema = new mongoose.Schema({
   category: String,
   seller: String,
   price: Number,
+  isBuybox: { type: Boolean, default: false },
+  catalogueId: { type: String, default: "" },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -47,9 +48,36 @@ const AdSchema = new mongoose.Schema({
   },
 });
 
-// Adding a Mongoose Middleware to create the slug before saving to DB
+// Custom validator that checks the uniqueness of ad's url of the current user
+AdSchema.pre("validate", async function (next) {
+  const fullURL = new URL(this.url);
+  let url = fullURL.origin + fullURL.pathname;
+
+  const userAds = await this.constructor.find({ user: this.user });
+
+  let testFullURL, testURL;
+
+  userAds.forEach((ad) => {
+    testFullURL = new URL(ad.url);
+    testURL = testFullURL.origin + testFullURL.pathname;
+
+    if (testURL === url) {
+      console.log("Erro!");
+
+      const err = new Error("Duplicated base URL");
+      return next(err);
+    }
+  });
+
+  next();
+});
+
 AdSchema.pre("save", async function (next) {
-  this.mlId = await getMlAdIDFromURL(this.url);
+  adInfo = await getMlAdIDFromURL(this.url);
+
+  this.mlId = adInfo.mlId;
+  this.catalogueId = adInfo.catalogueId;
+  this.isBuybox = adInfo.isBuybox;
 
   adInfo = await getAdDataFromId(this.mlId);
   adVisits = await getAdVisitsFromId(this.mlId);

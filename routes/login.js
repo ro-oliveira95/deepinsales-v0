@@ -6,28 +6,13 @@ const { protect } = require("../middleware/auth");
 const router = express.Router();
 
 router.get("/login", isAuthenticated, (req, res) => {
-  res.render("login");
-});
+  const { errorLogin, errorRegister, showRegisterWindow } = req.session;
 
-router.post("/login", (req, res) => {
-  const data = req.body;
-  const options = { proxy: { host: "127.0.0.1", port: 5000 } };
+  req.session.errorLogin = null;
+  req.session.errorRegister = null;
+  req.session.showRegisterWindow = null;
 
-  let token = "";
-
-  axios
-    .post("/api/v1/auth/login", data, options)
-    .then((response) => {
-      token = `Bearer ${response.data.token}`;
-
-      res.cookie("token", token);
-      res.redirect("/");
-    })
-    .catch((err) => {
-      console.log("erro de login");
-
-      res.redirect("/login");
-    });
+  res.render("login", { errorLogin, errorRegister, showRegisterWindow });
 });
 
 router.post("/register", (req, res) => {
@@ -59,27 +44,29 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-router.get("/", isNotAuthenticated, (req, res) => {
+router.get("/", protect, (req, res) => {
+  const { errorAddingAd } = req.session;
+
+  // req.session.errorAddingAd = null;
+
+  // console.log("entrou aqui");
+
   const user = req.user.name;
-  res.render("index", { user });
+  res.render("index", { error: null, user });
+  // res.render("index");
 });
 
-function isNotAuthenticated(req, res, next) {
-  protect(req, res, function () {
-    if (!req.user) {
-      return res.redirect("/login");
-    }
-    return next();
-  });
-}
-
 function isAuthenticated(req, res, next) {
-  protect(req, res, function () {
-    if (req.user) {
-      return res.redirect("/");
-    }
-    return next();
-  });
+  let token;
+  if (req.cookies.token && req.cookies.token.startsWith("Bearer")) {
+    token = req.cookies.token.split(" ")[1];
+  }
+
+  // make sure token exists
+  if (token) {
+    return res.redirect("/");
+  }
+  return next();
 }
 
 module.exports = router;
