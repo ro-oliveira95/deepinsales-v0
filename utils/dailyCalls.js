@@ -40,8 +40,6 @@ exports.updateSellsOnAllUsers = () => {
             mlIdList.push(ad.mlId);
           });
 
-          adsVisits = await getAdVisitsFromId(mlIdList);
-
           mlIdList = [];
 
           ads.forEach((ad, index) => {
@@ -55,10 +53,14 @@ exports.updateSellsOnAllUsers = () => {
           });
 
           adsBasicInfo = [];
+          adsVisits = [];
 
           for (let idList of mlIdList) {
             info = await getAdDataFromId(idList);
             adsBasicInfo = adsBasicInfo.concat(info);
+
+            visits = await getAdVisitsFromId(idList);
+            adsVisits = adsVisits.concat(visits);
           }
 
           for (let mlAdInfo of adsBasicInfo) {
