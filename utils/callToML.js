@@ -48,37 +48,59 @@ exports.getMlAdIDFromURL = async (adURL) => {
     adID = splitedDetails[0] + splitedDetails[1];
   } else {
     // Segundo caso: id implícito
-    permalink = url.protocol + "//" + url.host + url.pathname;
-    adName = url.pathname.substring(1).split("/")[0];
-    queryName = adName.replace(/-/g, "+");
+    index = details.indexOf('/p/');
+    productID = details.substring(index + 3)
+    console.log('productID', productID)
+    adID = await getMlAdIDFromCatalogue(productID);
+    console.log('adID', adID)
+    
+    // permalink = url.protocol + "//" + url.host + url.pathname;
+    // adName = url.pathname.substring(1).split("/")[0];
+    // queryName = adName.replace(/-/g, "+");
 
-    adID = await getMlAdIDFromSearch(queryName, permalink);
+    // adID = await getMlAdIDFromSearch(queryName, permalink);
   }
   // console.log(adID);
   return adID;
 };
 
-async function getMlAdIDFromSearch(query, permalink) {
+async function getMlAdIDFromCatalogue(productID) {
+  const url = `https://api.mercadolibre.com/products/${productID}`;
   let adID;
-  // console.log(`query: ${query}`);
+
   await axios
-    .get(`https://api.mercadolibre.com/sites/MLB/search?q=${query}`)
+    .get(url)
     .then((res) => {
-      results = res.data.results;
-      //console.log(results);
-      for (index in results) {
-        if (results[index].permalink === permalink) {
-          adID = results[index].id;
-          break;
-        }
-      }
+      adID = res.data.buy_box_winner.item_id;
     })
     .catch((err) => {
-      console.log("erro na procura no ML");
       console.log(err.message);
     });
   return adID;
 }
+
+
+// async function getMlAdIDFromSearch(query, permalink) {
+//   let adID;
+//   // console.log(`query: ${query}`);
+//   await axios
+//     .get(`https://api.mercadolibre.com/sites/MLB/search?q=${query}`)
+//     .then((res) => {
+//       results = res.data.results;
+//       //console.log(results);
+//       for (index in results) {
+//         if (results[index].permalink === permalink) {
+//           adID = results[index].id;
+//           break;
+//         }
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("erro na procura no ML");
+//       console.log(err.message);
+//     });
+//   return adID;
+// }
 
 exports.getSellerNicknameFromSellerId = async (sellerId) => {
   let sellerNickname;
